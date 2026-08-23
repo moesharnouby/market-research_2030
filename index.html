@@ -163,6 +163,53 @@
   .chart-wrap img { max-width: 100%; height: auto; border: 1px solid var(--border); border-radius: 8px; background: #fcfcfb; }
   .chart-caption { color: var(--muted); font-size: 12.5px; margin-top: 8px; font-style: italic; }
 
+  /* Tabs */
+  .tabbar {
+    position: sticky; top: 53px; z-index: 40;
+    background: var(--surface); border-bottom: 1px solid var(--border);
+    display: flex; justify-content: center; gap: 6px; padding: 8px 12px;
+    box-shadow: 0 2px 6px rgba(0,0,0,0.06);
+  }
+  .tab-btn {
+    border: 1px solid var(--border); background: transparent; color: var(--muted);
+    padding: 8px 18px; border-radius: 999px; cursor: pointer; font-size: 14px; font-weight: 700;
+    transition: background 0.15s, color 0.15s;
+  }
+  .tab-btn.active { background: var(--navy); color: #fff; border-color: var(--navy); }
+  .tab-btn:hover:not(.active) { background: var(--alt-row); }
+
+  .view { display: none; }
+  .view.active { display: block; }
+
+  /* Manufacturing tab: step cards & video embeds */
+  .mfg-cover { border-bottom-color: var(--navy-2); }
+  .step-card {
+    background: var(--bg); border: 1px solid var(--border); border-radius: 10px;
+    padding: 18px 20px; margin: 16px 0;
+  }
+  .step-card h3 { margin-top: 0; }
+  .step-purpose { color: var(--text); }
+  .step-equipment { font-size: 14.5px; }
+  .step-evidence { color: var(--muted); font-size: 13.5px; font-style: italic; }
+  .step-note { margin-top: 12px; }
+
+  .video-embed {
+    position: relative; width: 100%; padding-bottom: 56.25%; height: 0; overflow: hidden;
+    border-radius: 8px; margin: 12px 0 6px; background: #000; border: 1px solid var(--border);
+  }
+  .video-embed iframe {
+    position: absolute; top: 0; left: 0; width: 100%; height: 100%; border: 0;
+  }
+  .video-meta { margin-bottom: 4px; }
+  .video-title { font-weight: 700; font-size: 14.5px; }
+  .video-channel { color: var(--muted); font-size: 13px; }
+  .video-desc { font-size: 14px; color: var(--text); }
+  .video-missing {
+    background: var(--alt-row); border: 1px dashed var(--border); color: var(--muted);
+    border-radius: 8px; padding: 12px 14px; margin: 12px 0 6px; font-size: 13.5px; font-style: italic;
+  }
+  .video-card-compiled { background: var(--bg); border: 1px solid var(--border); border-radius: 10px; padding: 16px 18px; margin: 16px 0; }
+
   footer.site-footer { text-align: center; color: var(--muted); font-size: 13px; padding: 20px 0; }
 
   @media (max-width: 640px) {
@@ -170,6 +217,7 @@
     .cover-title { font-size: 22px; }
     .topbar { grid-template-columns: auto auto; }
     .topbar .brand { display: none; }
+    .tabbar { top: 0; }
   }
 
   /* Password gate */
@@ -238,8 +286,18 @@
     </div>
   </div>
 
+  <div class="tabbar">
+    <button class="tab-btn active" id="tabReport" onclick="setView('report')">
+      <span class="tab-ar">التقرير الرئيسي</span><span class="tab-en" style="display:none">Main Report</span>
+    </button>
+    <button class="tab-btn" id="tabMfg" onclick="setView('mfg')">
+      <span class="tab-ar">خطوط الإنتاج والمعدات</span><span class="tab-en" style="display:none">Manufacturing Lines</span>
+    </button>
+  </div>
+
   <div class="page-wrap">
-    <div id="ar-content" class="lang-block active" dir="rtl" lang="ar">
+    <div id="view-report" class="view active">
+      <div class="lang-block active" data-lang="ar" dir="rtl" lang="ar">
     <header class="cover">
       <div class="cover-eyebrow">المرحلة 1 — تقرير الغربلة</div>
       <h1 class="cover-title">دراسة جدوى الاستثمار الصناعي والسوق — مصر مقابل البرتغال | 2026–2030</h1>
@@ -402,7 +460,7 @@
     </section>
   </main>
   </div>
-    <div id="en-content" class="lang-block" dir="ltr" lang="en">
+      <div class="lang-block" data-lang="en" dir="ltr" lang="en">
     <header class="cover">
       <div class="cover-eyebrow">PHASE 1 — SCREENING REPORT</div>
       <h1 class="cover-title">Industrial Investment &amp; Market Feasibility Study — Egypt vs. Portugal | 2026–2030</h1>
@@ -565,6 +623,953 @@
     </section>
   </main>
   </div>
+    </div>
+    <div id="view-mfg" class="view">
+      <div class="lang-block active" data-lang="ar" dir="rtl" lang="ar">
+    <header class="cover mfg-cover">
+      <div class="cover-eyebrow">برومبت بحثي: خطوط الإنتاج والمعدات</div>
+      <h1 class="cover-title">طرق التصنيع وخطوط الإنتاج</h1>
+      <div class="cover-subtitle">المعدات وخطوات العملية وعروض فيديو حقيقية للفرص الثلاث المُختارة</div>
+      <p class="cover-note1">هذا القسم ناتج عن برومبت بحثي، وليس دراسة سوق: لكل منتج من المنتجات الثلاثة التي وقع عليها الاختيار في تقرير غربلة المرحلة الأولى، يوثّق عملية التصنيع الصناعية القياسية، والمعدات المستخدمة في كل مرحلة، وعروض فيديو حقيقية وموثّقة لكل خطوة — مصدرها قنوات مُصنِّعي المعدات الرسمية، ولقطات جولات مصانع حقيقية، وفيديوهات من مختبرات اختبار معتمدة. لم يُختلَق أي رابط فيديو: حيث لم يُعثر على فيديو حقيقي مناسب لخطوة ما، يُذكر ذلك صراحة بدلًا من ملئه برابط مُختلَق. كل رقم تكلفة/طاقة إنتاجية يتبع نفس انضباط الأدلة المُستخدم في التقرير الرئيسي: حقيقة موثّقة / محسوب / تقدير / افتراض، أو "أدلة غير كافية".</p>
+    </header>
+    <nav class="toc">
+      <div class="toc-title">المنتجات</div>
+      <ol><li><a href="#ar-mfg-lv">لوحات الجهد المنخفض، MCC/ATS، لوحات التحكم والحماية</a></li><li><a href="#ar-mfg-bess">معدات توزيع BESS للتيار المتردد/المستمر والمحولات</a></li><li><a href="#ar-mfg-plastics">البلاستيك الهندسي / الصناديق الكهربائية</a></li></ol>
+    </nav>
+    <main>
+    <section id="ar-mfg-lv">
+      <h1>لوحات الجهد المنخفض، MCC/ATS، لوحات التحكم والحماية</h1>
+      <h2>1. نظرة عامة على المنتج</h2>
+<p>لوحة/لوحة توزيع الجهد المنخفض — بما في ذلك مراكز التحكم بالمحركات (MCC)، ومفاتيح التحويل الآلي (ATS)، ولوحات التحكم/الحماية — هي تجميعة كهربائية مُصنَّعة في المصنع تضم قواطع الدارة والكونتاكتورات والقضبان النحاسية ومعدات التحكم داخل غلاف معدني، لتوزيع وحماية الطاقة الكهربائية لمبنى أو مصنع أو نقطة اتصال بالشبكة. المعيار الدولي الحاكم هو IEC 61439 ("تجميعات لوحات التحكم والتوزيع منخفضة الجهد")، الذي حل محل المعيار الأقدم IEC 60439، ويتطلب كلًا من التحقق التصميمي (النوعي) والتحقق الروتيني لكل وحدة قبل بيع اللوحة كتجميعة مطابقة للمواصفات. هذا المعيار يحكم معظم خطوات ضبط الجودة/الاختبار الموضحة أدناه.</p>
+<h2>2. خط الإنتاج — نظرة عامة على العملية</h2>
+<ul class="single"><li>1. قطع الصاج (بالليزر/الثقب) لألواح الغلاف والأبواب وألواح الغدة ومخزون القضبان</li></ul>
+<ul class="single"><li>2. الثني/التشكيل بالتحكم الرقمي CNC لأجسام الغلاف والأبواب والإطارات</li></ul>
+<ul class="single"><li>3. اللحام/الربط لزوايا الإطار وأعمدة التثبيت والوصلات الإنشائية</li></ul>
+<ul class="single"><li>4. المعالجة السطحية — إزالة الشحوم، الفوسفتة، الشطف، التجفيف (معالجة أولية قبل الطلاء)</li></ul>
+<ul class="single"><li>5. الطلاء بالمسحوق الإلكتروستاتيكي والمعالجة بالفرن</li></ul>
+<ul class="single"><li>6. تصنيع القضبان — قطع وثقب وثني النحاس/الألومنيوم بالتحكم الرقمي</li></ul>
+<ul class="single"><li>7. تركيب المكونات — القواطع، الكونتاكتورات، الريلايات، الأطراف، سكك DIN</li></ul>
+<ul class="single"><li>8. الأسلاك الداخلية وتوجيه الكابلات — القطع، التعرية، الكبس، التطريف، الترقيم</li></ul>
+<ul class="single"><li>9. تجميع الباب/واجهة التحكم — العدادات، لمبات المؤشر، القواطع التشابكية</li></ul>
+<ul class="single"><li>10. التحقق وفق IEC 61439 — اختبارات روتينية على كل وحدة + اختبارات نوعية للتصميم</li></ul>
+<ul class="single"><li>11. الفحص النهائي / اختبار القبول بالمصنع (FAT) — بصري، وظيفي، استمرارية، توثيق</li></ul>
+<ul class="single"><li>12. التغليف والشحن</li></ul>
+<h2>3. الخطوات التفصيلية: المعدات وعروض فيديو حقيقية</h2>
+<div class="step-card">
+        <h3>الخطوة 1 — قطع الصاج (ليزر/ثقب)</h3>
+        <p class="step-purpose">قطع ألواح الغلاف والأبواب وألواح الغدة وألواح التثبيت وفتحات مداخل الكابلات من لفة/صفيحة الصلب.</p>
+        <p class="step-equipment"><strong>المعدة: </strong>ماكينة قطع بالليزر الليفي CNC (2-12 كيلوواط) أو مكبس ثقب برجي CNC.</p>
+        <p class="step-evidence">الطاقة الإنتاجية: أدلة غير كافية لرقم دورة إنتاجية خاص باللوحات (يتفاوت مع سماكة الصاج وتعقيد الفتحات). السعر (SME/متوسط، 3-6 كيلوواط): 135,000-196,000 دولار؛ أنظمة الألواح الكبيرة/السميكة 282,000 دولار فأكثر [تقدير — piranhafab.com، 2024/25].</p>
+        <div class="video-embed"><iframe src="https://www.youtube.com/embed/1p7q8iUupmE" title="CNC Fiber Laser Cutting Machine For Electrical Panel Board Manufacturing" loading="lazy" allowfullscreen frameborder="0"></iframe></div>
+           <div class="video-meta"><div class="video-title">CNC Fiber Laser Cutting Machine For Electrical Panel Board Manufacturing</div><div class="video-channel">TL Pathak Group – Machines For Future</div></div>
+        
+      </div>
+<div class="step-card">
+        <h3>الخطوة 2 — الثني/التشكيل بالتحكم الرقمي</h3>
+        <p class="step-purpose">تشكيل الصفائح المسطحة إلى أجسام غلاف وأبواب وإطارات بزوايا ثني دقيقة.</p>
+        <p class="step-equipment"><strong>المعدة: </strong>ماكينة ثني ألواح CNC (مثل سلسلة Salvagnini P) أو مكبس ثني CNC.</p>
+        <p class="step-evidence">السعر: مستوى مبدئي 50,000-100,000 دولار؛ متوسط 100,000-250,000 دولار؛ أتمتة كاملة متقدمة 250,000-500,000 دولار فأكثر [تقدير — krrass.com، 2026]. بديل مكبس الثني حسب الطن: 40-63 طن 16,500-25,000 دولار وصولًا إلى 500-600 طن 65,000-95,000 دولار فأكثر [تقدير — ruchengmachinery.com، 2026].</p>
+        <div class="video-embed"><iframe src="https://www.youtube.com/embed/Wupf_dMFOac" title="Salvagnini panel bending: streamline sheet metal working with P4 panel bender" loading="lazy" allowfullscreen frameborder="0"></iframe></div>
+           <div class="video-meta"><div class="video-title">Salvagnini panel bending: streamline sheet metal working with P4 panel bender</div><div class="video-channel">Salvagnini</div></div>
+        
+      </div>
+<div class="step-card">
+        <h3>الخطوة 3 — اللحام/الربط</h3>
+        <p class="step-purpose">ربط عناصر الإطار، ولحام أعمدة/صواميل التثبيت، وإغلاق الفواصل في إطارات الغلاف الملحومة.</p>
+        <p class="step-equipment"><strong>المعدة: </strong>خلية لحام روبوتية MIG / خلية لحام ليزر لإطارات الغلاف.</p>
+        <p class="step-evidence">السعر: خلية روبوتية أساسية 10,000-50,000 دولار؛ متوسطة 50,000-150,000 دولار؛ متقدمة 150,000-500,000 دولار فأكثر (بالإضافة إلى 10-25 ألف دولار تركيب، 3-10 آلاف دولار برمجة) [تقدير — evsint.com، 2026].</p>
+        <div class="video-embed"><iframe src="https://www.youtube.com/embed/gtjrucoI8a8" title="Electrical Enclosure Robot Welding" loading="lazy" allowfullscreen frameborder="0"></iframe></div>
+           <div class="video-meta"><div class="video-title">Electrical Enclosure Robot Welding</div><div class="video-channel">KDM Steel</div></div>
+        
+      </div>
+<div class="step-card">
+        <h3>الخطوة 4 — المعالجة السطحية (إزالة الشحوم، الفوسفتة)</h3>
+        <p class="step-purpose">إزالة الزيوت/الأكاسيد وتكوين طلاء تحويلي لالتصاق الدهان ومقاومة التآكل قبل الطلاء بالمسحوق.</p>
+        <p class="step-equipment"><strong>المعدة: </strong>خط معالجة أولية متعدد المراحل (إزالة شحوم ← شطف ← فوسفتة ← شطف ← تجفيف).</p>
+        <p class="step-evidence">أدلة غير كافية لرقم تكلفة/طاقة إنتاجية خاص باللوحات؛ عادة ما تُدمج تكلفة هذه المرحلة مع خط الطلاء بالمسحوق أدناه، وتظهر في بداية فيديو خط الطلاء.</p>
+        <div class="video-missing">لم يُعثر على فيديو حقيقي موثّق لهذه الخطوة.</div>
+        <div class="note step-note"><strong>ملاحظة: </strong>لم يُعثر على فيديو حقيقي مخصص لهذه المرحلة وحدها — تظهر في القسم الأول من فيديو خط الطلاء بالمسحوق أدناه.</div>
+      </div>
+<div class="step-card">
+        <h3>الخطوة 5 — الطلاء بالمسحوق الإلكتروستاتيكي</h3>
+        <p class="step-purpose">تطبيق طلاء متين ومقاوم للتآكل وعازل (عادة RAL 7035/7032) عبر الرش الإلكتروستاتيكي، ثم المعالجة بالفرن.</p>
+        <p class="step-equipment"><strong>المعدة: </strong>خط طلاء بالمسحوق الإلكتروستاتيكي آلي (كابينة رش + فرن معالجة + سير ناقل).</p>
+        <p class="step-evidence">السعر: خط آلي بمستوى إنتاجي 200,000-2,000,000 دولار مُركَّب؛ الأنظمة الكبيرة جدًا/عالية الطاقة قد تتجاوز 10,000,000 دولار [تقدير — reliantfinishingsystems.com، 2023]. عمليات SME غالبًا ما تستخدم كابينة يدوية/دفعية أقل تكلفة (لم تُسعَّر منفصلة).</p>
+        <div class="video-embed"><iframe src="https://www.youtube.com/embed/evZxQiX6h70" title="Industrial Enclosure Powder Coating Line" loading="lazy" allowfullscreen frameborder="0"></iframe></div>
+           <div class="video-meta"><div class="video-title">Industrial Enclosure Powder Coating Line</div><div class="video-channel">Tekpan</div></div>
+        
+      </div>
+<div class="step-card">
+        <h3>الخطوة 6 — تصنيع القضبان (ثني وثقب النحاس)</h3>
+        <p class="step-purpose">قطع وثقب (أنماط ثقوب للتوصيل بالبراغي) وثني قضبان النحاس/الألومنيوم إلى الهندسة ثلاثية الأبعاد الدقيقة المطلوبة داخل اللوحة.</p>
+        <p class="step-equipment"><strong>المعدة: </strong>ماكينة معالجة قضبان CNC (تجمع بين الثقب والقص والثني).</p>
+        <p class="step-evidence">السعر: افتراض فقط — يمتنع الموردون (payapress.com، busbarmachine.co) عن نشر أسعار علنية؛ تشير قوائم السوق العامة إلى نطاق تقريبي 15,000-120,000 دولار فأكثر حسب مستوى الأتمتة.</p>
+        <div class="video-embed"><iframe src="https://www.youtube.com/embed/oR9LQpaPpw0" title="CNC Busbar Bending Machine + CNC Busbar Punch &amp; Shear Machine + Dual-Head Press Bending Machine" loading="lazy" allowfullscreen frameborder="0"></iframe></div>
+           <div class="video-meta"><div class="video-title">CNC Busbar Bending Machine + CNC Busbar Punch &amp; Shear Machine + Dual-Head Press Bending Machine</div><div class="video-channel">Jinan Fenghua CNC Equipment Co., Ltd.</div></div>
+        <div class="note step-note"><strong>ملاحظة: </strong>هذا فيديو YouTube Shorts (أقل من 60 ثانية) — جيد لرؤية الماكينة أثناء العمل، وليس شرحًا كاملًا للعملية.</div>
+      </div>
+<div class="step-card">
+        <h3>الخطوة 7 — تركيب المكونات (القواطع، الكونتاكتورات، الريلايات، الأطراف)</h3>
+        <p class="step-purpose">تركيب سكك DIN وألواح التثبيت والقواطع والكونتاكتورات والريلايات وصناديق الأطراف على اللوحة الخلفية المطلية.</p>
+        <p class="step-equipment"><strong>المعدة: </strong>عمل تجميع يدوي/شبه آلي في الغالب على منضدة العمل (مفكات عزم دوران، أدوات قطع/ثقب سكك DIN).</p>
+        <p class="step-evidence">مدفوع بساعات العمل وليس بطاقة الماكينة الإنتاجية — أدلة غير كافية لرقم مرجعي علني.</p>
+        <div class="video-missing">لم يُعثر على فيديو حقيقي موثّق لهذه الخطوة.</div>
+        <div class="note step-note"><strong>ملاحظة: </strong>لم يُعثر على فيديو مستقل مؤكد يعزل هذه المرحلة فقط؛ تظهر ضمن فيديوهات جولة المصنع المُجمَّعة في القسم 5 أدناه.</div>
+      </div>
+<div class="step-card">
+        <h3>الخطوة 8 — الأسلاك الداخلية وتوجيه الكابلات</h3>
+        <p class="step-purpose">قطع وتعرية وكبس وتطريف وترقيم وتوجيه الأسلاك الداخلية للتحكم/الطاقة بين المكونات وفق مخطط الأسلاك.</p>
+        <p class="step-equipment"><strong>المعدة: </strong>ماكينة آلية لقطع/تعرية/كبس الأسلاك؛ ماكينة طباعة/ترقيم أسلاك آلية.</p>
+        <p class="step-evidence">أدلة غير كافية لأرقام طاقة إنتاجية خاصة باللوحات.</p>
+        <div class="video-embed"><iframe src="https://www.youtube.com/embed/rWue0t2M0wE" title="Automatic Real-time Printing Labeling Machine for Wires and Cables" loading="lazy" allowfullscreen frameborder="0"></iframe></div>
+           <div class="video-meta"><div class="video-title">Automatic Real-time Printing Labeling Machine for Wires and Cables</div><div class="video-channel">Suzhou Sanao Co., Ltd.</div></div>
+        <div class="note step-note"><strong>ملاحظة: </strong>يُظهر هذا الفيديو القصير ترقيم الأسلاك تحديدًا وليس عملية غرفة الأسلاك كاملة — يُعامَل كتوضيح لخطوة فرعية واحدة فقط.</div>
+      </div>
+<h2>4. جدول المعدات الكامل</h2>
+<div class="table-wrap"><table><colgroup><col style="width:20.00%"><col style="width:20.00%"><col style="width:12.00%"><col style="width:18.00%"><col style="width:18.00%"><col style="width:12.00%"></colgroup><thead><tr><th>المعدة</th><th>الوظيفة</th><th>الطاقة الإنتاجية التقريبية</th><th>نطاق السعر التقريبي (جديد)</th><th>أمثلة موردين</th><th>الأدلة</th></tr></thead><tbody><tr class=""><td>ماكينة قطع بالليزر الليفي CNC (3-6 كيلوواط)</td><td>قطع صفائح الصاج/الفتحات</td><td>أدلة غير كافية</td><td>135-196 ألف دولار (SME/متوسط)؛ 282 ألف دولار فأكثر (ألواح كبيرة)</td><td>Piranha، Bystronic، Trumpf، Amada، Bodor</td><td>تقدير</td></tr><tr class="alt"><td>مكبس ثقب برجي CNC</td><td>ثقب الفتحات/الثقوب في الصاج</td><td>أدلة غير كافية</td><td>لم يُسعَّر هذه الجلسة</td><td>Amada، Trumpf</td><td>أدلة غير كافية</td></tr><tr class=""><td>ماكينة ثني ألواح CNC (مركز ثني آلي)</td><td>تشكيل أجسام الغلاف والأبواب والإطارات</td><td>أدلة غير كافية</td><td>مبدئي 50-100 ألف دولار؛ متوسط 100-250 ألف؛ متقدم 250-500 ألف فأكثر</td><td>Salvagnini، Trumpf، Amada، Krrass</td><td>تقدير</td></tr><tr class="alt"><td>مكبس ثني CNC</td><td>بديل/مكمّل للثني</td><td>أدلة غير كافية</td><td>40-63 طن: 16.5-25 ألف دولار؛ حتى 500-600 طن: 65-95 ألف فأكثر</td><td>Accurl، Durma</td><td>تقدير</td></tr><tr class=""><td>خلية لحام روبوتية</td><td>لحام إطارات/وصلات الغلاف</td><td>أدلة غير كافية</td><td>أساسية 10-50 ألف دولار؛ متقدمة 150-500 ألف فأكثر</td><td>Fanuc، ABB، أنظمة مُدمجة KUKA</td><td>تقدير</td></tr><tr class="alt"><td>خط معالجة أولية (إزالة شحوم/فوسفتة)</td><td>تحضير السطح للطلاء</td><td>أدلة غير كافية</td><td>عادة مُدمج ضمن تكلفة خط الطلاء</td><td>شركات تكامل تشطيب متنوعة</td><td>أدلة غير كافية</td></tr><tr class=""><td>خط طلاء بالمسحوق الآلي</td><td>تطبيق/معالجة الطلاء الواقي</td><td>أدلة غير كافية</td><td>200 ألف-2 مليون دولار مُركَّب؛ أنظمة كبيرة جدًا 10 ملايين فأكثر</td><td>Nordson، Gema، Wagner، IntelliFinishing</td><td>تقدير</td></tr><tr class="alt"><td>ماكينة معالجة قضبان CNC</td><td>تصنيع قضبان النحاس/الألومنيوم</td><td>أدلة غير كافية</td><td>≈15-120 ألف دولار فأكثر (افتراض)</td><td>EHRT، Jinan Fenghua، BusbarMachine.co</td><td>افتراض</td></tr><tr class=""><td>ماكينة كبس/تعرية أسلاك</td><td>تحضير الأسلاك الداخلية</td><td>أدلة غير كافية</td><td>لم يُسعَّر هذه الجلسة</td><td>Kingsing، Eastontech، Bettertech</td><td>أدلة غير كافية</td></tr><tr class="alt"><td>ماكينة ترقيم/طباعة أسلاك وكابلات</td><td>ترقيم الأسلاك الداخلية وفق المخطط</td><td>أدلة غير كافية</td><td>لم يُسعَّر هذه الجلسة</td><td>Suzhou Sanao، Kingsing</td><td>أدلة غير كافية</td></tr><tr class=""><td>جهاز اختبار العزل العالي الجهد (Hipot)</td><td>اختبار عزل روتيني ونوعي</td><td>لكل وحدة، دقائق</td><td>فئة 50 كيلوفولت ≈2,400-6,600 دولار؛ فئة 100 كيلوفولت ≈5,500-8,400 دولار</td><td>ATO، Vitrek، HV Hipot</td><td>حقيقة موثّقة (قائمة أسعار)</td></tr><tr class="alt"><td>جهاز اختبار مقاومة العزل (Megger)</td><td>اختبار مقاومة العزل الروتيني</td><td>لكل وحدة</td><td>لم يُسعَّر هذه الجلسة</td><td>Megger، Fluke</td><td>أدلة غير كافية</td></tr><tr class=""><td>محطة اختبار قصر الدائرة عالية القدرة</td><td>اختبار نوعي لتحمل قصر الدائرة</td><td>غير منطبق — اختبار نوعي</td><td>خدمة مختبر خارجية، ليست معدة تُشترى</td><td>CESI (KEMA Labs)، مختبرات جهد عالٍ مستقلة</td><td>غير منطبق — خدمة خارجية</td></tr></tbody></table></div>
+<div class="note"><strong>ملاحظة الحجم: </strong>تتدرج مداخل مكبس الثني/ماكينة ثني الألواح/اللحام الروبوتي من مستوى SME (الفئات الدنيا) إلى مصنع صناعي كبير (الفئات العليا)؛ نطاقات أسعار الطلاء بالمسحوق والقطع بالليزر المذكورة هي عمومًا أرقام لمصنع متوسط إلى كبير — خط SME أصغر عادة ما يستخدم ليزر أقل قدرة، وكابينة طلاء يدوية/دفعية، وأدوات قضبان شبه يدوية، وتقع دون هذه النطاقات بكثير.</div>
+<h2>5. ضبط الجودة والاختبارات (IEC 61439)</h2>
+<p>يقسم معيار IEC 61439-1/-2 التحقق إلى تحقق تصميمي (نوعي) — يُجرى مرة واحدة لكل تصميم/تصنيف تجميعة، إما بالاختبار أو بالمقارنة مع تصميم مرجعي مُختبر — وتحقق روتيني، يُجرى على كل وحدة مُجمَّعة قبل الشحن.</p>
+<div class="step-card">
+        <h3>اختبار العزل الكهربائي / مقاومة العزل</h3>
+        <p class="step-purpose">التحقق من سلامة العزل — عدم حدوث انهيار تحت جهد زائد. كل من الروتيني (مستوى مخفَّض) والنوعي (المستوى الكامل).</p>
+        <p class="step-equipment"><strong>المعدة: </strong>جهاز اختبار Hipot / جهاز اختبار عزل بالتيار المتردد؛ جهاز قياس مقاومة العزل (Megger).</p>
+        <p class="step-evidence">لم يُتحقق بثقة من فيديو حقيقي مخصص لهذا الاختبار تحديدًا على لوحة جهد منخفض هذه الجلسة.</p>
+        <div class="video-missing">لم يُعثر على فيديو حقيقي موثّق لهذه الخطوة.</div>
+        <div class="note step-note"><strong>ملاحظة: </strong>مُصنَّف كفجوة مفتوحة بدلًا من ملئه بفيديو مُختلَق.</div>
+      </div>
+<div class="step-card">
+        <h3>اختبار تحمل قصر الدائرة</h3>
+        <p class="step-purpose">التأكد من أن التجميعة وقضبانها/دعاماتها تتحمل تيار القصر المتوقع دون فشل ميكانيكي. اختبار نوعي فقط، يُجرى في مختبر مستقل معتمد (مثل CESI/KEMA Labs).</p>
+        <p class="step-equipment"><strong>المعدة: </strong>محطة اختبار عالية القدرة (بنك مولدات/محولات قادر على توليد تيارات عطل بمستوى كيلو أمبير).</p>
+        
+        <div class="video-embed"><iframe src="https://www.youtube.com/embed/850Q_TydWDs" title="Short-Circuit Withstand Test on Low Voltage Switchgear" loading="lazy" allowfullscreen frameborder="0"></iframe></div>
+           <div class="video-meta"><div class="video-title">Short-Circuit Withstand Test on Low Voltage Switchgear</div><div class="video-channel">High Volt Academy</div></div>
+        
+      </div>
+<div class="step-card">
+        <h3>اختبار جهد عالٍ/عزل في المصنع (نظير توضيحي)</h3>
+        <p class="step-purpose">يوضح ممارسة سير عمل اختبار الجهد العالي/العزل داخل المصنع على معدات التحويل الكهربائي.</p>
+        <p class="step-equipment"><strong>المعدة: </strong>جهاز اختبار جهد عالٍ، محطة اختبار على خط إنتاج فعلي.</p>
+        
+        <div class="video-embed"><iframe src="https://www.youtube.com/embed/B6kKgItdKWE" title="High Voltage Testing on MV Switchgear (Live From Factory)" loading="lazy" allowfullscreen frameborder="0"></iframe></div>
+           <div class="video-meta"><div class="video-title">High Voltage Testing on MV Switchgear (Live From Factory)</div><div class="video-channel">Gaurav J - TheElectricalGuy</div></div>
+        <div class="note step-note"><strong>ملاحظة: </strong>هذا اختبار على معدات جهد متوسط (MV)، وليس خاصًا بالجهد المنخفض — يُستخدم كنظير توضيحي لممارسة الاختبار داخل المصنع، وليس استشهادًا حرفيًا بالجهد المنخفض.</div>
+      </div>
+<div class="step-card">
+        <h3>اختبار درجة الحماية (IP) واختبار التشغيل الميكانيكي</h3>
+        <p class="step-purpose">يتحقق اختبار IP من الحماية ضد الغبار/الماء وفق IEC 60529؛ ويتحقق اختبار التشغيل الميكانيكي من عمل الأبواب/القواطع التشابكية/آليات القاطع عبر دورات متكررة.</p>
+        <p class="step-equipment"><strong>المعدة: </strong>غرفة غبار، جهاز اختبار رش/نفث مائي؛ جهاز دورات يدوي/آلي.</p>
+        <p class="step-evidence">لم يُعثر على فيديو حقيقي موثّق خاص بلوحات الجهد المنخفض لأي من الاختبارين هذه الجلسة.</p>
+        <div class="video-missing">لم يُعثر على فيديو حقيقي موثّق لهذه الخطوة.</div>
+        <div class="note step-note"><strong>ملاحظة: </strong>مُصنَّف كفجوة بحثية مفتوحة — بحث متابعة مباشر على قنوات المُصنِّعين (Schneider، ABB، Hager، Legrand) أو قنوات المختبرات المعتمدة (CESI/KEMA، TÜV، Intertek) من المرجح أن يكشف عنها.</div>
+      </div>
+<h2>6. الفيديو المُجمَّع لجولة المصنع</h2>
+<div class="video-card video-card-compiled">
+        <div class="video-embed"><iframe src="https://www.youtube.com/embed/wTHSDTWQCas" title="Electrical Panel Manufacturing Factory | Panel Board Making Process | How It's Made" loading="lazy" allowfullscreen frameborder="0"></iframe></div>
+        <div class="video-meta"><div class="video-title">Electrical Panel Manufacturing Factory | Panel Board Making Process | How It's Made</div><div class="video-channel">Unbox Factory</div><p class="video-desc">جولة بأسلوب "كيف يُصنَع" لمصنع لوحات كهربائية — القطع والتشكيل والتجميع والأسلاك بالتسلسل.</p></div>
+      </div>
+<p>بديل: "How Electrical Switchboards are made? | Factories in Poland" — قناة Factories — youtube.com/watch?v=mX0y9wIUC_U — جولة في مصنع لوحات توزيع أوروبي من قناة وثائقية صناعية بلقطات حقيقية.</p>
+<h2>7. قائمة المصادر</h2>
+<ul class="single"><li>TL Pathak Group — قطع بالليزر الليفي CNC للوحات كهربائية — youtube.com/watch?v=1p7q8iUupmE</li></ul>
+<ul class="single"><li>Salvagnini — عرض ماكينة ثني الألواح P4 — youtube.com/watch?v=Wupf_dMFOac</li></ul>
+<ul class="single"><li>KDM Steel — لحام روبوتي لغلاف كهربائي — youtube.com/watch?v=gtjrucoI8a8</li></ul>
+<ul class="single"><li>Tekpan — خط طلاء بالمسحوق لغلاف صناعي — youtube.com/watch?v=evZxQiX6h70</li></ul>
+<ul class="single"><li>Jinan Fenghua CNC Equipment — ماكينة ثني/ثقب/قص قضبان CNC — youtube.com/shorts/oR9LQpaPpw0</li></ul>
+<ul class="single"><li>Suzhou Sanao — ماكينة ترقيم أسلاك آلية — youtube.com/shorts/rWue0t2M0wE</li></ul>
+<ul class="single"><li>High Volt Academy — اختبار تحمل قصر الدائرة على لوحات جهد منخفض — youtube.com/shorts/850Q_TydWDs</li></ul>
+<ul class="single"><li>Gaurav J - TheElectricalGuy — اختبار جهد عالٍ على معدات جهد متوسط (من داخل المصنع) — youtube.com/watch?v=B6kKgItdKWE</li></ul>
+<ul class="single"><li>Unbox Factory — مصنع تصنيع لوحات كهربائية — youtube.com/watch?v=wTHSDTWQCas</li></ul>
+<ul class="single"><li>Factories — كيف تُصنَع لوحات التوزيع الكهربائية؟ مصانع في بولندا — youtube.com/watch?v=mX0y9wIUC_U</li></ul>
+<ul class="single"><li>Piranha Fabrication — تكلفة ماكينة القطع بالليزر الليفي — piranhafab.com</li></ul>
+<ul class="single"><li>Krrass — دليل أسعار ماكينة ثني الألواح CNC 2026 — krrass.com</li></ul>
+<ul class="single"><li>Rucheng Machinery — دليل أسعار مكبس الثني CNC 2026 — ruchengmachinery.com</li></ul>
+<ul class="single"><li>EVS International — دليل تكلفة روبوت اللحام 2026 — evsint.com</li></ul>
+<ul class="single"><li>Reliant Finishing Systems — تكلفة نظام الطلاء بالمسحوق الصناعي — reliantfinishingsystems.com</li></ul>
+<ul class="single"><li>ATO — قائمة أسعار جهاز اختبار Hipot 2025 — ato.com</li></ul>
+<ul class="single"><li>Schneider Electric — تنظيم منطقة تصنيع لوحات التوزيع الكهربائية (تحقق من تسلسل العملية) — blog.se.com</li></ul>
+    </section>
+  
+
+    <section id="ar-mfg-bess">
+      <h1>معدات توزيع BESS للتيار المتردد/المستمر والمحولات</h1>
+      <h2>1. نظرة عامة على المنتج</h2>
+<p>يغطي هذا التقرير خزائن توزيع التيار المتردد/المستمر وصناديق التجميع وتجميعات لوحات القطع المحيطة بمنشأة تخزين طاقة بالبطاريات (BESS) — وليس خلايا البطارية أو الوحدات أو عاكسات الإلكترونيات القوى نفسها. من الناحية المادية، هذه نسخة من تصنيع معدات التحويل/الأغلفة الكهربائية العام وفق IEC 61439 مع إضافة مكونات خاصة بـBESS: مفاتيح فصل التيار المستمر، قواطع/فيوزات مُصنَّفة للتيار المستمر، أطراف تجميع لسلاسل/رفوف البطاريات، أجهزة حماية من الارتفاع المفاجئ، أغلفة مقاومة للطقس (بتصنيف IP/NEMA)، وأسلاك اتصال CAN bus/RS485 لنظام إدارة البطارية (BMS).</p>
+<div class="note"><strong>ملاحظة النطاق: </strong>لا يوجد عمليًا أي محتوى فيديو متاح للعامة على YouTube لخط إنتاج صندوق تجميع أو خزانة توزيع تيار مستمر خاص بـBESS على مستوى مُصنِّع/مكوّن. لم ينشر أي من المُدمِجين الكبار (Sungrow، Huawei، CATL، Fluence، Wärtsilä، Powin) جولة مصنع لخط خزائن التجميع أو التحويل الخاص بهم. كل خطوة أدناه مُوضَّحة بلقطات حقيقية وموثّقة لتصنيع معدات تحويل/أغلفة كهربائية عامة وفق IEC 61439، مع تصنيفها صراحة كبديل حيث لا توجد لقطات خاصة بـBESS. هذا الغياب نفسه دليل مفيد: يُبنى هذا القطاع بهدوء عبر نفس منظومة ورش تصنيع اللوحات التي ينتمي إليها المستثمر بالفعل، وليس عبر خط تصنيع مُخصَّص ومُعلَن عنه.</div>
+<h2>2. خط الإنتاج — نظرة عامة على العملية</h2>
+<ul class="single"><li>1. الهندسة التصميمية وتخطيط اللوحة (التحقق وفق IEC 61439، تحديد أبعاد القضبان، تصنيف قوس التيار المستمر، اختيار تصنيف IP/NEMA للغلاف) — ليست مرحلة مادية قابلة للتصوير</li></ul>
+<ul class="single"><li>2. تصنيع الصاج — قطع بالليزر/الثقب CNC لألواح الغلاف والأبواب وألواح الغدة وإطارات التثبيت</li></ul>
+<ul class="single"><li>3. الثني/التشكيل بمكبس CNC للصفائح المقطوعة إلى جسم الغلاف والأبواب والهيكل</li></ul>
+<ul class="single"><li>4. لحام وتجميع الإطار/الغلاف (للبناء الملحوم مقابل المبرشم/المُثبَّت بالبراغي)</li></ul>
+<ul class="single"><li>5. المعالجة السطحية — معالجة أولية + طلاء بالمسحوق (طلاءات أسمك/بحرية للبيئات الخارجية/الساحلية/الغبار الصحراوي ذات الصلة بمصر)</li></ul>
+<ul class="single"><li>6. تصنيع القضبان — قضبان تيار متردد وقضبان تيار مستمر موجب/سالب (مُرمَّزة بالألوان حسب اصطلاح UL/IEC للتيار المستمر)</li></ul>
+<ul class="single"><li>7. تركيب المكونات والأسلاك/الحزم الداخلية — مفاتيح فصل تيار مستمر، فيوزات/قواطع تيار مستمر، أطراف تجميع، أجهزة حماية من الارتفاع المفاجئ، قواطع تيار متردد، وحدات اتصال CAN/RS485</li></ul>
+<ul class="single"><li>8. تركيب الحشوات/الإحكام وعتاد تصنيف IP/NEMA — حشوات الأبواب، غدات الكابلات، صمامات تنفس/تصريف، تركيب مروحة/كوة تهوية للإدارة الحرارية</li></ul>
+<ul class="single"><li>9. ضبط الجودة واختبار القبول بالمصنع — العزل، اختراق IP/NEMA، اختبار حلقة الاتصال، الاختبار الوظيفي</li></ul>
+<ul class="single"><li>10. التغليف والشحن</li></ul>
+<h2>3. الخطوات التفصيلية: المعدات وعروض فيديو حقيقية</h2>
+<div class="step-card">
+        <h3>الخطوة 1 — قطع الصاج</h3>
+        <p class="step-purpose">قطع ألواح الغلاف والأبواب واللوحات الخلفية وألواح الغدة من صلب مدرفل على البارد أو مجلفن أو ستانلس (304/316 للاستخدام الساحلي/الخارجي) أو ألومنيوم.</p>
+        <p class="step-equipment"><strong>المعدة: </strong>ماكينات قطع بالليزر الليفي أو مكابس ثقب برجية CNC.</p>
+        <p class="step-evidence">الطاقة الإنتاجية: تقدير — ليزر ليفي حديث 4-6 كيلوواط يقطع مجموعة ألواح صلب 2 مم نموذجية في أقل من 5 دقائق؛ أدلة غير كافية لدورة إنتاجية خاصة بخزائن BESS. السعر: SME ≈80-250 ألف دولار؛ مصنع كبير 300 ألف-مليون دولار فأكثر [تقدير، أدلة صناعية 2025-26].</p>
+        <div class="video-embed"><iframe src="https://www.youtube.com/embed/QhsI415LDoA" title="How Electronic Enclosure Is Made | Inside RapidDirect's Sheet Metal Fabrication Factory" loading="lazy" allowfullscreen frameborder="0"></iframe></div>
+           <div class="video-meta"><div class="video-title">How Electronic Enclosure Is Made | Inside RapidDirect's Sheet Metal Fabrication Factory</div><div class="video-channel">RAPID DIRECT</div></div>
+        <div class="note step-note"><strong>ملاحظة: </strong>جولة عامة لمصنع تصنيع أغلفة من الصاج (ليست خاصة بـBESS) — لقطات بديلة.</div>
+      </div>
+<div class="step-card">
+        <h3>الخطوة 2 — الثني بمكبس CNC</h3>
+        <p class="step-purpose">تشكيل الصفائح المسطحة إلى أجسام غلاف ثلاثية الأبعاد وأبواب وألواح غدة/تثبيت بتفاوتات دقيقة لمحاذاة الباب وجلوس الحشية.</p>
+        <p class="step-equipment"><strong>المعدة: </strong>مكابس ثني هيدروليكية/كهربائية CNC.</p>
+        <p class="step-evidence">الدورة: تقدير، ~10-30 ثانية/ثنية. السعر: SME 40-150 ألف دولار؛ مصنع كبير 200 ألف فأكثر [تقدير].</p>
+        <div class="video-embed"><iframe src="https://www.youtube.com/embed/3X6fVzwek5I" title="CNC Press Brakes, Precise and Efficient, to Create a Variety of Metal Boxes" loading="lazy" allowfullscreen frameborder="0"></iframe></div>
+           <div class="video-meta"><div class="video-title">CNC Press Brakes, Precise and Efficient, to Create a Variety of Metal Boxes</div><div class="video-channel">JUGAO CNC MACHINE JIANGSU CO LTD</div></div>
+        <div class="note step-note"><strong>ملاحظة: </strong>تشكيل عام لهيكل صندوق/خزانة (لقطات بديلة).</div>
+      </div>
+<div class="step-card">
+        <h3>الخطوة 3 — لحام الإطار/الغلاف</h3>
+        <p class="step-purpose">ربط الألواح المُشكَّلة في هيكل ملحوم صلب للأغلفة الخارجية الأثقل/الخاصة بـBESS؛ لحام أعمدة التثبيت والتقوية.</p>
+        <p class="step-equipment"><strong>المعدة: </strong>خلايا لحام روبوتية MIG/TIG أو خلايا لحام ليزر روبوتية مُصمَّمة خصيصًا لإنتاج الخزائن الكهربائية.</p>
+        <p class="step-evidence">السعر: 80-400 ألف دولار لكل خلية [تقدير].</p>
+        <div class="video-embed"><iframe src="https://www.youtube.com/embed/UqLmczS1Qi0" title="Laser Welding Solution for the Production of Electrical Cabinets with Robots" loading="lazy" allowfullscreen frameborder="0"></iframe></div>
+           <div class="video-meta"><div class="video-title">Laser Welding Solution for the Production of Electrical Cabinets with Robots</div><div class="video-channel">AWL</div></div>
+        <div class="note step-note"><strong>ملاحظة: </strong>ذو صلة مباشرة — لحام روبوتي مخصص لتصنيع الخزائن الكهربائية تحديدًا.</div>
+      </div>
+<div class="step-card">
+        <h3>الخطوة 4 — المعالجة السطحية / الطلاء بالمسحوق</h3>
+        <p class="step-purpose">الحماية من التآكل والتشطيب — حاسمة للأغلفة الخارجية المُصنَّفة NEMA 3R/4/4X أو IP54-IP66 المُعرَّضة للطقس أو الهواء المالح الساحلي أو الغبار/الأشعة فوق البنفسجية الصحراوية (ذات صلة مباشرة بمصر).</p>
+        <p class="step-equipment"><strong>المعدة: </strong>غسيل معالجة أولية متعدد المراحل + كابينة رش مسحوق إلكتروستاتيكي + فرن معالجة.</p>
+        <p class="step-evidence">السعر: خط دفعي SME 50-150 ألف دولار؛ خط آلي كامل 300 ألف-مليون دولار فأكثر [تقدير، fannoninfrared.com / ems-powdercoating.com، 2025-26].</p>
+        <div class="video-embed"><iframe src="https://www.youtube.com/embed/-phThemjJTM" title="Powder Coating Line for Switch Gear and Electric Panel" loading="lazy" allowfullscreen frameborder="0"></iframe></div>
+           <div class="video-meta"><div class="video-title">Powder Coating Line for Switch Gear and Electric Panel</div><div class="video-channel">Prism Surface Coatings Pvt Ltd</div></div>
+        <div class="note step-note"><strong>ملاحظة: </strong>مُسمّى صراحة لمعدات التحويل/اللوحات — تطابق أقرب من فيديو طلاء عام.</div>
+      </div>
+<div class="step-card">
+        <h3>الخطوة 5 — تصنيع القضبان (تيار متردد + مستمر)</h3>
+        <p class="step-purpose">قطع وثقب وثني وترميز قضبان النحاس/الألومنيوم الحاملة لتيار التغذية المتردد وتيار سلسلة/بطارية المستمر؛ تتطلب قضبان التيار المستمر تصميم خلوص/زحف دقيق لأن أقواس التيار المستمر لا تنطفئ ذاتيًا عند عبور الصفر كما في التيار المتردد.</p>
+        <p class="step-equipment"><strong>المعدة: </strong>ماكينات معالجة قضبان CNC (تجمع بين الثقب والثني والقطع والقص).</p>
+        <p class="step-evidence">الطاقة الإنتاجية: تقدير، ~20-40 قطعة/ساعة (أرقام تسويقية من المُصنِّع، مصدر أولي غير مؤكد).</p>
+        <div class="video-embed"><iframe src="https://www.youtube.com/embed/yuHiRJuWwas" title="6-Axis CNC Busbar Punching Cutting Machine for Electrical Cabinet Production" loading="lazy" allowfullscreen frameborder="0"></iframe></div>
+           <div class="video-meta"><div class="video-title">6-Axis CNC Busbar Punching Cutting Machine for Electrical Cabinet Production</div><div class="video-channel">ERSM Sheet Metal Solutions</div></div>
+        <div class="note step-note"><strong>ملاحظة: </strong>يربط صراحة تصنيع القضبان بإنتاج الخزائن.</div>
+      </div>
+<div class="step-card">
+        <h3>الخطوة 6 — تركيب المكونات وحزم الأسلاك/الكابلات</h3>
+        <p class="step-purpose">تركيب مفاتيح فصل التيار المستمر وفيوزات/قواطع التيار المستمر وأطراف تجميع السلاسل/الرفوف وأجهزة الحماية من الارتفاع المفاجئ وقواطع التيار المتردد والريلايات ووحدات اتصال BMS/المراقبة (CAN bus، RS485/Modbus) على سكك DIN/اللوحة؛ كبس وتطريف وتوجيه أسلاك الطاقة والتحكم.</p>
+        <p class="step-equipment"><strong>المعدة: </strong>أدوات ثقب/تركيب سكك DIN، ماكينات كبس وتطريف الأسلاك، مفكات عزم دوران محكومة لإحكام أطراف التيار المستمر (حاسمة لتفادي التسخين المقاوم/خطر الحريق).</p>
+        <p class="step-evidence">أدلة غير كافية لساعات عمل خاصة بخزانة BESS — هذه المرحلة مبنية يدويًا، مدفوعة بساعات العمل وليس بدورة الماكينة.</p>
+        <div class="video-embed"><iframe src="https://www.youtube.com/embed/W70T8vOS13o" title="Industrial Electrical Panel Wiring and Assembly for Beginners and Professionals" loading="lazy" allowfullscreen frameborder="0"></iframe></div>
+           <div class="video-meta"><div class="video-title">Industrial Electrical Panel Wiring and Assembly for Beginners and Professionals</div><div class="video-channel">IET-76</div></div>
+        <div class="note step-note"><strong>ملاحظة: </strong>بديل على مستوى المكوّن — مماثل مباشرة للأسلاك الداخلية لصندوق التجميع، وليس لقطات خاصة بـBESS.</div>
+      </div>
+<div class="step-card">
+        <h3>الخطوة 7 — الحشوات والإحكام وعتاد تصنيف IP</h3>
+        <p class="step-purpose">تركيب حشوات الأبواب وغدات الكابلات وصمامات التنفس/التصريف، وللخزائن الخارجية المقاومة للطقس الخاصة بـBESS، وحدات مروحة/كوة تهوية أو مبادل حراري مُحكَم للإدارة الحرارية، لتحقيق تصنيف IP/NEMA المحدد.</p>
+        <p class="step-equipment"><strong>المعدة: </strong>روبوتات/أجهزة CNC لتوزيع حشية الرغوة المُشكَّلة في الموضع (FIPFG).</p>
+        <p class="step-evidence">أدلة غير كافية لأرقام الطاقة الإنتاجية/التكلفة هذه الجلسة.</p>
+        <div class="video-embed"><iframe src="https://www.youtube.com/embed/q8z6C7GGLJ4" title="CNC Foam Gasket for Enclosure Door &amp; Cover Sealing, Robust and Maintenance-Free Design" loading="lazy" allowfullscreen frameborder="0"></iframe></div>
+           <div class="video-meta"><div class="video-title">CNC Foam Gasket for Enclosure Door &amp; Cover Sealing, Robust and Maintenance-Free Design</div><div class="video-channel">WINMAN</div></div>
+        
+      </div>
+<h2>4. جدول المعدات الكامل</h2>
+<div class="table-wrap"><table><colgroup><col style="width:20.00%"><col style="width:20.00%"><col style="width:12.00%"><col style="width:18.00%"><col style="width:18.00%"><col style="width:12.00%"></colgroup><thead><tr><th>المعدة</th><th>الوظيفة</th><th>الطاقة الإنتاجية التقريبية</th><th>نطاق السعر التقريبي</th><th>أمثلة موردين</th><th>الأدلة</th></tr></thead><tbody><tr class=""><td>ماكينة قطع بالليزر الليفي (4-12 كيلوواط)</td><td>قطع ألواح الغلاف/الأبواب</td><td>دقائق لكل مجموعة ألواح</td><td>SME 80-250 ألف دولار؛ كبير 300 ألف-مليون فأكثر</td><td>Trumpf، Bystronic، Amada، Han's Laser، Bodor</td><td>تقدير</td></tr><tr class="alt"><td>مكبس ثقب برجي CNC</td><td>مكمّل/بديل للليزر</td><td>ثوانٍ لكل ثقبة</td><td>150-500 ألف دولار</td><td>Amada، Murata، Trumpf</td><td>تقدير</td></tr><tr class=""><td>مكبس ثني CNC</td><td>ثني الصفائح إلى أجسام/أبواب الغلاف</td><td>10-30 ثانية/ثنية</td><td>SME 40-150 ألف؛ كبير 200 ألف فأكثر</td><td>Amada، LVD، Durma، JUGAO</td><td>تقدير</td></tr><tr class="alt"><td>خلية لحام روبوتية MIG/TIG أو ليزر</td><td>لحام إطارات/وصلات الغلاف</td><td>أدلة غير كافية</td><td>80-400 ألف دولار لكل خلية</td><td>AWL، أنظمة مُدمجة KUKA، Panasonic</td><td>تقدير</td></tr><tr class=""><td>خط غسيل معالجة أولية</td><td>تحضير سطح المعدن قبل الطلاء</td><td>حسب سرعة الخط</td><td>50-200 ألف دولار</td><td>DürrEcoclean، Junair</td><td>تقدير</td></tr><tr class="alt"><td>كابينة طلاء بالمسحوق الإلكتروستاتيكي + فرن</td><td>تطبيق/معالجة تشطيب الطلاء</td><td>دفعي أو حسب سرعة الخط</td><td>SME 50-150 ألف؛ خط كامل 300 ألف-مليون فأكثر</td><td>Nordson، Gema، Wagner، COLO</td><td>تقدير</td></tr><tr class=""><td>ماكينة معالجة قضبان CNC</td><td>تصنيع قضبان تيار متردد/مستمر</td><td>≈20-40 قطعة/ساعة (ادعاء المُصنِّع)</td><td>30-150 ألف دولار</td><td>EHRT، LTMC، MAC/BUSBARMAC</td><td>تقدير</td></tr><tr class="alt"><td>أدوات سكك DIN، مفكات عزم دوران</td><td>تركيب مفاتيح فصل/فيوزات/قواطع/أطراف تيار مستمر</td><td>مدفوع بساعات العمل</td><td>500-5,000 دولار (أدوات يدوية)</td><td>Weidmüller، Phoenix Contact</td><td>افتراض</td></tr><tr class=""><td>ماكينة كبس/تطريف أسلاك</td><td>تحضير أطراف الأسلاك، كبس الوصلات/الأطراف</td><td>وحدات/ساعة، حسب الطراز</td><td>5-100 ألف دولار فأكثر (خطوط حزم آلية)</td><td>Komax، Schleuniger، Weidmüller</td><td>تقدير</td></tr><tr class="alt"><td>روبوت توزيع حشية FIPFG</td><td>تطبيق حشية رغوة في الموضع للإحكام IP</td><td>أدلة غير كافية</td><td>40-150 ألف دولار</td><td>Sonderhoff، WINMAN</td><td>تقدير</td></tr><tr class=""><td>جهاز اختبار Hipot/العزل</td><td>اختبار جهد العزل/التحمل</td><td>لكل وحدة، دقائق</td><td>3-30 ألف دولار</td><td>Hipotronics، Chroma، Vitrek</td><td>تقدير</td></tr><tr class="alt"><td>جهاز اختبار اختراق IP/NEMA</td><td>اختبار نوعي/دفعي لإحكام الغلاف</td><td>لكل اختبار، نوعي فقط</td><td>10-100 ألف دولار فأكثر (مستوى مختبر)</td><td>Applus+ Keystone (خدمة اختبار)</td><td>تقدير</td></tr><tr class=""><td>منشأة اختبار قوس/قصر الدائرة</td><td>اختبار نوعي لتصنيف القوس الداخلي لمعدات التحويل</td><td>نوعي فقط</td><td>غير منطبق — خارجي لمختبرات معتمدة</td><td>KEMA Labs، CESI</td><td>حقيقة موثّقة (ممارسة الصناعة)</td></tr></tbody></table></div>
+<div class="note"><strong>ملاحظة الحجم: </strong>بالنسبة لداخل جديد من فئة SME يضيف خزائن BOS الخاصة بـBESS إلى ورشة لوحات جهد منخفض قائمة، الاستثمار الرأسمالي الإضافي الواقعي محدود: معرفة التعامل مع قضبان/مكونات التيار المستمر (غالبًا عملية/تدريب، وليس استثمارًا رأسماليًا جديدًا)، ربما قدرة اختبار IP/إحكام مُحسَّنة للمنتج المُصنَّف للاستخدام الخارجي، والوصول إلى اختبار قوس/قصر دائرة نوعي من طرف ثالث (لا يُبنى داخليًا أبدًا حتى بحجم مصنع كبير). ماكينات القطع بالليزر ومكبس الثني والطلاء بالمسحوق والقضبان تتداخل إلى حد كبير مع قدرة المستثمر القائمة في لوحات IEC 61439 منخفضة الجهد.</div>
+<h2>5. ضبط الجودة والاختبارات</h2>
+<div class="step-card">
+        <h3>اختبار العزل / Hipot</h3>
+        <p class="step-purpose">تطبيق جهد تيار متردد أو مستمر مرتفع بين الأجزاء الحية والغلاف/الأرضي للتحقق من سلامة العزل — اختبار روتيني مطلوب وفق IEC 61439-1.</p>
+        <p class="step-equipment"><strong>المعدة: </strong>جهاز اختبار Hipot / تحمل العزل.</p>
+        
+        <div class="video-missing">لم يُعثر على فيديو حقيقي موثّق لهذه الخطوة.</div>
+        <div class="note step-note"><strong>ملاحظة: </strong>عُثر على فيديو توضيحي عام لاختبار العزل في البحث لكن لم يُعاد التحقق منه بشكل مستقل هذه الجلسة — يُتعامل معه بحذر قبل النشر النهائي.</div>
+      </div>
+<div class="step-card">
+        <h3>اختبار اختراق IP/NEMA (رش الماء/الغبار)</h3>
+        <p class="step-purpose">اختبار نوعي (وليس لكل وحدة)، للتحقق من إحكام الغلاف وفق IEC 60529.</p>
+        <p class="step-equipment"><strong>المعدة: </strong>غرفة غبار، جهاز اختبار فوهة نفث مائي.</p>
+        
+        <div class="video-embed"><iframe src="https://www.youtube.com/embed/PV3PK_UDRa0" title="IP66 – Waterjet Test" loading="lazy" allowfullscreen frameborder="0"></iframe></div>
+           <div class="video-meta"><div class="video-title">IP66 – Waterjet Test</div><div class="video-channel">IndEx - Ex Professionals</div></div>
+        
+      </div>
+<div class="step-card">
+        <h3>اختبار IP — لقطات من مختبر معتمد</h3>
+        <p class="step-purpose">لقطات احترافية من مختبر اختبار لعملية اختراق نفث الماء.</p>
+        <p class="step-equipment"><strong>المعدة: </strong>جهاز اختبار نفث مائي في مختبر تصديق معتمد.</p>
+        
+        <div class="video-embed"><iframe src="https://www.youtube.com/embed/6pY6A_5sVEA" title="Ingress Protection IPX5 Testing: Spraying of Water Jets" loading="lazy" allowfullscreen frameborder="0"></iframe></div>
+           <div class="video-meta"><div class="video-title">Ingress Protection IPX5 Testing: Spraying of Water Jets</div><div class="video-channel">Applus+ Keystone</div></div>
+        
+      </div>
+<div class="step-card">
+        <h3>تصنيف قوس التيار المستمر/القوس الداخلي (نظير توضيحي)</h3>
+        <p class="step-purpose">بالنسبة لمعدات التحويل، يُجرى اختبار نوعي لعطل القوس الداخلي في مختبر جهد عالٍ معتمد — لا يُبنى داخليًا.</p>
+        <p class="step-equipment"><strong>المعدة: </strong>منشأة اختبار عطل قوس داخلي معتمدة.</p>
+        
+        <div class="video-embed"><iframe src="https://www.youtube.com/embed/FFRgNHZWstY" title="Medium Voltage Switchgear - Internal Arc Fault Test" loading="lazy" allowfullscreen frameborder="0"></iframe></div>
+           <div class="video-meta"><div class="video-title">Medium Voltage Switchgear - Internal Arc Fault Test</div><div class="video-channel">Think Smart!</div></div>
+        <div class="note step-note"><strong>ملاحظة: </strong>جهد متوسط، وليس خاصًا بالجهد المنخفض/التيار المستمر — أفضل لقطات حقيقية دراماتيكية لعطل القوس الداخلي عُثر عليها؛ تُستخدم كأقرب نظير موثّق لأن لقطات اختبار نوعي لقوس التيار المستمر الخاص بـBESS غير موجودة علنًا.</div>
+      </div>
+<div class="step-card">
+        <h3>الاختبار الوظيفي / اختبار القبول بالمصنع (FAT)</h3>
+        <p class="step-purpose">الفحص الوظيفي النهائي الشامل (تشغيل القاطع، القواطع التشابكية، استمرارية الأسلاك، ولـBESS اختبار حلقة اتصال CAN bus/RS485/Modbus مع BMS/EMS) قبل الشحن.</p>
+        <p class="step-equipment"><strong>المعدة: </strong>إجراء قائمة فحص FAT وفق الاختبارات الروتينية لـIEC 61439.</p>
+        
+        <div class="video-embed"><iframe src="https://www.youtube.com/embed/spnuAUhA2ZM" title="Step-by-Step Factory Acceptance Test | Industrial Control Panel Inspection" loading="lazy" allowfullscreen frameborder="0"></iframe></div>
+           <div class="video-meta"><div class="video-title">Step-by-Step Factory Acceptance Test | Industrial Control Panel Inspection</div><div class="video-channel">Infinity Controls</div></div>
+        
+      </div>
+<div class="note"><strong>علامة فجوة: </strong>اختبار حلقة الاتصال (CAN bus/RS485) الخاص بـBESS تحديدًا، ودورة الاختبار الحراري للخزانة نفسها، كلاهما أعطى "أدلة غير كافية" — لم يُعثر على فيديو علني مخصص؛ عادة ما تُدمج هذه ضمن اختبار FAT/الوظيفي العام (الاتصالات) أو ببساطة لا تُصوَّر (الدورة الحرارية تنطبق بشكل أساسي على خلايا/وحدات البطارية، وليس الخزانة المحيطة).</div>
+<h2>6. الفيديو المُجمَّع لجولة المصنع</h2>
+<div class="video-card video-card-compiled">
+        <div class="video-embed"><iframe src="https://www.youtube.com/embed/1k2YD5wBTGw" title="Look Inside One of Our Switchgear Factories" loading="lazy" allowfullscreen frameborder="0"></iframe></div>
+        <div class="video-meta"><div class="video-title">Look Inside One of Our Switchgear Factories</div><div class="video-channel">Eaton</div><p class="video-desc">فيديو رسمي من شركة Eaton يُلقي نظرة داخلية على إحدى منشآت تصنيع معدات التحويل الخاصة بها — تجميع معدات تحويل جهد منخفض/متوسط عام، وليس خاصًا بـBESS.</p></div>
+      </div>
+<div class="note"><strong>فجوة صريحة: </strong>لا توجد جولة مصنع خاصة بخزائن/معدات تحويل BESS على YouTube من أي مُدمِج مُسمّى (Sungrow، Huawei، CATL، Fluence، Wärtsilä، Powin) أو شركة أغلفة كبرى (Rittal، nVent، Schneider). يُستخدم فيديو Eaton هذا صراحة كأقرب بديل موثّق لمصنع معدات تحويل عام. البديل الثانوي هو "Electrical Panel Manufacturing Factory" (Unbox Factory، youtube.com/watch?v=wTHSDTWQCas)، وهو أيضًا عام وليس خاصًا بـBESS.</div>
+<h2>7. قائمة المصادر</h2>
+<ul class="single"><li>RAPID DIRECT — كيف يُصنَع الغلاف الإلكتروني — youtube.com/watch?v=QhsI415LDoA</li></ul>
+<ul class="single"><li>JUGAO CNC MACHINE — مكابس ثني CNC لصناديق معدنية — youtube.com/watch?v=3X6fVzwek5I</li></ul>
+<ul class="single"><li>AWL — حل لحام بالليزر لخزائن كهربائية بروبوتات — youtube.com/watch?v=UqLmczS1Qi0</li></ul>
+<ul class="single"><li>Prism Surface Coatings — خط طلاء بالمسحوق لمعدات التحويل واللوحات — youtube.com/watch?v=-phThemjJTM</li></ul>
+<ul class="single"><li>ERSM Sheet Metal Solutions — ماكينة ثقب قضبان CNC سداسية المحاور لإنتاج خزائن كهربائية — youtube.com/watch?v=yuHiRJuWwas</li></ul>
+<ul class="single"><li>IET-76 — أسلاك وتجميع لوحة كهربائية صناعية — youtube.com/watch?v=W70T8vOS13o</li></ul>
+<ul class="single"><li>WINMAN — حشية رغوة CNC لإحكام باب/غطاء الغلاف — youtube.com/watch?v=q8z6C7GGLJ4</li></ul>
+<ul class="single"><li>IndEx - Ex Professionals — اختبار نفث مائي IP66 — youtube.com/watch?v=PV3PK_UDRa0</li></ul>
+<ul class="single"><li>Applus+ Keystone — اختبار اختراق IPX5 — youtube.com/watch?v=6pY6A_5sVEA</li></ul>
+<ul class="single"><li>Think Smart! — اختبار عطل قوس داخلي لمعدات تحويل جهد متوسط — youtube.com/watch?v=FFRgNHZWstY</li></ul>
+<ul class="single"><li>Infinity Controls — اختبار قبول المصنع خطوة بخطوة — youtube.com/watch?v=spnuAUhA2ZM</li></ul>
+<ul class="single"><li>Eaton — نظرة داخل أحد مصانعنا لمعدات التحويل — youtube.com/watch?v=1k2YD5wBTGw</li></ul>
+<ul class="single"><li>TE Connectivity — دليل المنتجات الكهربائية لـBESS (مرجع مكونات) — te.com</li></ul>
+<ul class="single"><li>Fractory — تكلفة ماكينة القطع بالليزر — fractory.com</li></ul>
+<ul class="single"><li>Fannon Infrared — تكلفة نظام الطلاء بالمسحوق لورشة صغيرة — fannoninfrared.com</li></ul>
+    </section>
+  
+
+    <section id="ar-mfg-plastics">
+      <h1>البلاستيك الهندسي / الصناديق الكهربائية</h1>
+      <h2>1. نظرة عامة على المنتج</h2>
+<p>الصناديق الكهربائية البلاستيكية — علب التوصيل، صناديق التوزيع، والأغلفة المُصنَّفة IP65/UL94 V-0 مثل خطوط منتجات Schneider Thalassa وLegrand Plexo وFibox وBopla — تُصنَّع عبر القولبة بالحقن للراتنجات الهندسية (عادة بولي كربونات، ABS، أو بوليستر مُقوَّى بالألياف الزجاجية). يُصادق معيار IP65 (IEC 60529) على الإحكام ضد الغبار ومقاومة نفث الماء؛ ويُصادق UL94 V-0 على أداء مقاومة اللهب. حقيقة حاسمة لضبط الجودة: تُمنح شهادة UL94 V-0 على مستوى الراتنج (المادة) من قِبل مورد الراتنج عبر "البطاقة الصفراء" (Yellow Card) الخاصة بـUL — وهي مرتبطة بالسماكة والتركيبة تحديدًا، فيجب على المُصنِّع الحصول على راتنج ببطاقة صفراء سارية تطابق سماكة الجدار واللون المُستخدمين بالضبط، ولا يمكنه استبدال المواد دون إبطال الشهادة.</p>
+<h2>2. خط الإنتاج — نظرة عامة على العملية</h2>
+<ul class="single"><li>1. تصميم القالب والتجهيز (استثمار رأسمالي أولي لمرة واحدة لكل رقم قطعة، عادة يُسنَد لصانع قوالب متخصص)</li></ul>
+<ul class="single"><li>2. تجفيف الراتنج/تحضير المادة — تجفيف حبيبات PC/ABS الماصة للرطوبة في مجففات هوبر مُجفِّفة</li></ul>
+<ul class="single"><li>3. القولبة بالحقن (العملية الأساسية) — حقن الراتنج المنصهر في القالب المغلق تحت ضغط</li></ul>
+<ul class="single"><li>4. التبريد والإخراج — تصلب القطعة، ثم إخراجها (غالبًا بذراع روبوت لأسطح إحكام IP65 النظيفة)</li></ul>
+<ul class="single"><li>5. إزالة الشوائب/التشذيب/إزالة البوابة — إزالة القنوات/الشوائب، فحص استواء سطح الإحكام</li></ul>
+<ul class="single"><li>6. الإحكام — إدخال حشية، توزيع FIPFG، أو اللحام بالموجات فوق الصوتية لإحكام IP65 بين الغطاء والقاعدة</li></ul>
+<ul class="single"><li>7. إدخال العتاد — إدخالات نحاسية ملولبة، مفصلات، أقفال، غدات كابلات</li></ul>
+<ul class="single"><li>8. الطباعة بالوسادة/الترقيم بالليزر/الترقيم</li></ul>
+<ul class="single"><li>9. ضبط الجودة/الاختبار — فحص أبعادي/بصري، اختبار اختراق IP65، تحقق UL94، اختبار صدمة/سقوط IK</li></ul>
+<ul class="single"><li>10. التغليف — تعبئة بأكياس بلاستيكية، تعبئة كرتونية، تجهيز على منصات نقالة</li></ul>
+<h2>3. الخطوات التفصيلية: المعدات وعروض فيديو حقيقية</h2>
+<div class="step-card">
+        <h3>الخطوة 1 — تصميم القالب والتجهيز (استثمار رأسمالي أولي)</h3>
+        <p class="step-purpose">بناء أداة التجويف/القلب من الصلب المُصلَّد (أو الألومنيوم للأحجام الأقل) التي تُحدد هندسة الصندوق وأضلاع الإحكام وجيوب الإدخالات.</p>
+        <p class="step-equipment"><strong>المعدة: </strong>تفريز CNC، تشغيل بالتفريغ الكهربائي (EDM)، تجميع قاعدة القالب — عادة ورشة صانع قوالب متخصص منفصلة.</p>
+        <p class="step-evidence">مدة التسليم: 6-16 أسبوعًا [تقدير — Formlabs، Xometry، 2025/26]. التكلفة: قالب ألومنيوم متوسط الحجم 2,000-5,000 دولار؛ قالب صلب معقد/عالي الحجم 5,000-100,000 دولار فأكثر (صندوق بأضلاع إحكام/تجاويف تحت قطع/إدخالات يقع على الأرجح في نطاق 15,000-80,000 دولار) [تقدير].</p>
+        <div class="video-embed"><iframe src="https://www.youtube.com/embed/kf5dmjOM-RE" title="Factory Tour Injection Mold Tooling Process" loading="lazy" allowfullscreen frameborder="0"></iframe></div>
+           <div class="video-meta"><div class="video-title">Factory Tour Injection Mold Tooling Process</div><div class="video-channel">NCIM Eldorado Mold</div></div>
+        <div class="note step-note"><strong>ملاحظة: </strong>عُثر عليه عبر البحث؛ تطابق العنوان/القناة، لم يُعاد التحقق منه بشكل مستقل عبر oEmbed — يجب إعادة التحقق قبل النشر النهائي.</div>
+      </div>
+<div class="step-card">
+        <h3>الخطوة 2 — تجفيف الراتنج/تحضير المادة</h3>
+        <p class="step-purpose">إزالة الرطوبة الممتصة من حبيبات PC الماصة قبل الانصهار، لمنع التحلل المائي والتخطيط الفضي وفقدان مقاومة الصدمة/أداء UL94.</p>
+        <p class="step-equipment"><strong>المعدة: </strong>مجفف هوبر مُجفِّف + جهاز تحميل مادة.</p>
+        <p class="step-evidence">PC: تجفيف عند 110-130 درجة مئوية لمدة 3-4 ساعات؛ ABS: 75-85 درجة مئوية لمدة 2-4 ساعات [تقدير — super-ingenuity.cn، تحقق مقابل أدبيات عامة؛ اتّبع دائمًا نشرة بيانات مورد الراتنج].</p>
+        <div class="video-embed"><iframe src="https://www.youtube.com/embed/SgsnZpL0744" title="Plastics Processing: The Life of a Resin Pellet through Injection Molding and Extrusion" loading="lazy" allowfullscreen frameborder="0"></iframe></div>
+           <div class="video-meta"><div class="video-title">Plastics Processing: The Life of a Resin Pellet through Injection Molding and Extrusion</div><div class="video-channel">ConairGroup</div></div>
+        <div class="note step-note"><strong>ملاحظة: </strong>مُصنِّع رسمي لمعدات التجفيف/مناولة المواد.</div>
+      </div>
+<div class="step-card">
+        <h3>الخطوة 3 — القولبة بالحقن (العملية الأساسية)</h3>
+        <p class="step-purpose">صهر الراتنج وحقنه تحت ضغط في القالب المغلق لتشكيل قاعدة/غطاء الصندوق.</p>
+        <p class="step-equipment"><strong>المعدة: </strong>ماكينة قولبة بالحقن هيدروليكية أو كهربائية، مُصنَّفة بقوة الإغلاق — الصناديق بهذا الحجم/سماكة الجدار تعمل عادة على ماكينات 150-500 طن.</p>
+        <p class="step-evidence">زمن الدورة: 10-90 ثانية حسب حجم القطعة، القطع الصناعية العامة عادة 25-45 ثانية؛ غلاف متوسط الحجم على الأرجح 30-60 ثانية [تقدير/افتراض — Plast Fab Works، 2026، غير خاص بالصناديق]. السعر: SME (50-200 طن) مستعمل 15-120 ألف دولار، جديد بعلامة صينية 18-48 ألف؛ صناعي (400-1000 طن فأكثر) جديد 220-550 ألف دولار فأكثر، مستعمل 400-700 طن 75-300 ألف [تقدير — Meadoworks، Daoben Machinery، 2026].</p>
+        <div class="video-embed"><iframe src="https://www.youtube.com/embed/2qAnJy8x8WA" title="Plastics Injection Molding: Step-By-Step at the Factory — Field Notes" loading="lazy" allowfullscreen frameborder="0"></iframe></div>
+           <div class="video-meta"><div class="video-title">Plastics Injection Molding: Step-By-Step at the Factory — Field Notes</div><div class="video-channel">Camera Roll</div></div>
+        
+      </div>
+<div class="step-card">
+        <h3>الخطوة 4 — التبريد والإخراج</h3>
+        <p class="step-purpose">الاحتفاظ بالقطعة داخل القالب تحت تحكم حراري مُبرَّد بالماء حتى تستقر أبعاديًا، ثم إخراجها عبر دبابيس إخراج أو ذراع روبوت (الإخراج الروبوتي مُفضَّل لأسطح الإحكام/المظهر النظيفة).</p>
+        <p class="step-equipment"><strong>المعدة: </strong>دوائر تبريد القالب (وحدة تبريد/تحكم حراري) + روبوت إخراج.</p>
+        <p class="step-evidence">عادة ما يمثل التبريد 50-70% من إجمالي زمن الدورة [تقدير — معرفة هندسية عامة للقولبة بالحقن، غير خاصة بالصناديق].</p>
+        <div class="video-missing">لم يُعثر على فيديو حقيقي موثّق لهذه الخطوة.</div>
+        <div class="note step-note"><strong>ملاحظة: </strong>لم يُعثر على فيديو مستقل مخصص يتجاوز ما هو مُضمَّن في فيديو جولة المصنع في الخطوة 3 — مُصنَّف كأدلة غير كافية لفيديو خاص بهذه المرحلة.</div>
+      </div>
+<div class="step-card">
+        <h3>الخطوة 5 — إزالة الشوائب/التشذيب/إزالة البوابة</h3>
+        <p class="step-purpose">إزالة بقايا القنوات/البوابات والشوائب، خصوصًا على طول خطوط الفصل وأسطح إحكام IP65 حيث تُخل الشوائب بإحكام الحشية.</p>
+        <p class="step-equipment"><strong>المعدة: </strong>تشذيب يدوي (أدوات يدوية/كماشة هوائية) للحجم المنخفض-المتوسط؛ إزالة شوائب بالتبريد العميق (تدوير بالنيتروجين السائل) للحجم الأعلى/القطع المعقدة.</p>
+        <p class="step-evidence">أدلة غير كافية لرقم طاقة إنتاجية محدد.</p>
+        <div class="video-missing">لم يُعثر على فيديو حقيقي موثّق لهذه الخطوة.</div>
+        <div class="note step-note"><strong>ملاحظة: </strong>لم يُعثر على فيديو مستقل موثّق لإزالة الشوائب بالتبريد العميق/الميكانيكية خاص بالصناديق — يُصنَّف صراحة بدلًا من التخمين.</div>
+      </div>
+<div class="step-card">
+        <h3>الخطوة 6 — الإحكام (حشية / FIPFG / لحام بالموجات فوق الصوتية)</h3>
+        <p class="step-purpose">تحقيق إحكام IP65 فأعلى بين الغطاء والقاعدة — عبر حشية مطاطية مُشكَّلة مسبقًا، حشية بولي يوريثان رغوية مُشكَّلة في الموضع (FIPFG)، أو لحام بالموجات فوق الصوتية لغلاف مُحكَم دائم.</p>
+        <p class="step-equipment"><strong>المعدة: </strong>روبوت/نظام توزيع-قياس FIPFG، أو مكبس لحام بالموجات فوق الصوتية.</p>
+        <p class="step-evidence">FIPFG: تطبيق حبة مستمرة، ثوانٍ لكل قطعة [تقدير]. اللحام بالموجات فوق الصوتية: عادة 1-3 ثوانٍ زمن لحام فعلي بالإضافة إلى التحميل/التفريغ [تقدير، غير موثّق بشكل مستقل].</p>
+        <div class="video-embed"><iframe src="https://www.youtube.com/embed/KDnTcciBm40" title="Product Basics: Formed-In-Place Foam Gaskets ("FIPFG"/"FIPG")" loading="lazy" allowfullscreen frameborder="0"></iframe></div>
+           <div class="video-meta"><div class="video-title">Product Basics: Formed-In-Place Foam Gaskets ("FIPFG"/"FIPG")</div><div class="video-channel">Industrilas</div></div>
+        <div class="note step-note"><strong>ملاحظة: </strong>Industrilas هي أيضًا مورد لمفصلات/عتاد الصناديق — ذات صلة مضاعفة. راجع أيضًا: ADTW Study، "Ultrasonic Welding | How Ultrasonic Welding Process Works" (youtube.com/watch?v=TH5Pkj3ew7k) — شرح تعليمي عام، وليس لقطات مصنع خاصة بالصناديق.</div>
+      </div>
+<div class="step-card">
+        <h3>الخطوة 7 — إدخال العتاد (إدخالات نحاسية، مفصلات، أقفال)</h3>
+        <p class="step-purpose">تركيب إدخالات نحاسية ملولبة (لبراغي الغطاء/التثبيت) ومفصلات معدنية وآليات أقفال — إما بالكبس الحراري/الموجات فوق الصوتية بعد القولبة، أو بالقولبة المُدمجة أثناء الخطوة 3.</p>
+        <p class="step-equipment"><strong>المعدة: </strong>ماكينة كبس حراري آلية أو شبه آلية (مكبس قرن حراري أو موجات فوق صوتية).</p>
+        <p class="step-evidence">الكبس الحراري عادة أقل من 5 ثوانٍ لكل إدخال على معدات آلية [افتراض، غير موثّق بشكل مستقل].</p>
+        <div class="video-embed"><iframe src="https://www.youtube.com/embed/e7K-RXiQno8" title="Automatic Heat Staking Machine For Installing Brass Heat Set Threaded Insert for Plastics Parts" loading="lazy" allowfullscreen frameborder="0"></iframe></div>
+           <div class="video-meta"><div class="video-title">Automatic Heat Staking Machine For Installing Brass Heat Set Threaded Insert for Plastics Parts</div><div class="video-channel">Shenzhen Danrel Industrial Co., LTD</div></div>
+        
+      </div>
+<div class="step-card">
+        <h3>الخطوة 8 — الطباعة بالوسادة/الترقيم</h3>
+        <p class="step-purpose">تطبيق الشعارات وعلامات العلامة التجارية وملصقات الأطراف/التصنيف على سطح الصندوق (غالبًا مُنحنٍ).</p>
+        <p class="step-equipment"><strong>المعدة: </strong>ماكينة طباعة بالوسادة (لون واحد أو دوارة متعددة الألوان)؛ الترقيم بالليزر كبديل دائم وخالٍ من المواد الكيميائية.</p>
+        <p class="step-evidence">عادة عملية شبه آلية سريعة تستغرق ثوانٍ قليلة لكل طبعة [افتراض، غير موثّق بشكل مستقل].</p>
+        <div class="video-embed"><iframe src="https://www.youtube.com/embed/sq016InT-2k" title="How a Pad Printing Machine Works" loading="lazy" allowfullscreen frameborder="0"></iframe></div>
+           <div class="video-meta"><div class="video-title">How a Pad Printing Machine Works</div><div class="video-channel">Automark</div></div>
+        
+      </div>
+<h2>4. جدول المعدات الكامل</h2>
+<div class="table-wrap"><table><colgroup><col style="width:20.00%"><col style="width:20.00%"><col style="width:14.00%"><col style="width:20.00%"><col style="width:16.00%"><col style="width:10.00%"></colgroup><thead><tr><th>المعدة</th><th>الوظيفة</th><th>الطاقة الإنتاجية التقريبية</th><th>نطاق السعر التقريبي (دولار)</th><th>أمثلة موردين</th><th>الأدلة</th></tr></thead><tbody><tr class=""><td>قالب/تجهيز إنتاجي (صلب، تعقيد متوسط)</td><td>يحدد هندسة القطعة — استثمار لمرة واحدة لكل رقم قطعة</td><td>غير منطبق (مرة واحدة)</td><td>ألومنيوم 2-5 آلاف دولار؛ صلب معقد/عالي الحجم 5-100 ألف فأكثر (صندوق على الأرجح 15-80 ألف)</td><td>صانعو قوالب داخليون أو متخصصون (الصين/تركيا/الاتحاد الأوروبي)</td><td>تقدير</td></tr><tr class="alt"><td>ماكينة قولبة بالحقن، بحجم SME (50-200 طن)</td><td>القولبة الأساسية للصناديق الصغيرة-المتوسطة</td><td>10-45 ثانية/طلقة</td><td>مستعمل 15-120 ألف دولار؛ جديد (علامة صينية) 18-48 ألف</td><td>Haitian، Yizumi، Chen Hsong، Arburg، Engel</td><td>تقدير</td></tr><tr class=""><td>ماكينة قولبة بالحقن، صناعية (400-1000 طن فأكثر)</td><td>خطوط صناديق أكبر/متعددة التجاويف</td><td>30-90 ثانية/طلقة</td><td>جديد 220-550 ألف دولار فأكثر؛ مستعمل 400-700 طن 75-300 ألف</td><td>Engel، Arburg، KraussMaffei، Wittmann Battenfeld، Husky، Haitian</td><td>تقدير</td></tr><tr class="alt"><td>مجفف راتنج مُجفِّف/جهاز تحميل هوبر</td><td>إزالة الرطوبة من حبيبات PC/ABS</td><td>PC: 110-130°C، 3-4 س؛ ABS: 75-85°C، 2-4 س</td><td>≈3,000-15,000 دولار</td><td>Conair، Novatec، Wittmann، Shini</td><td>تقدير/افتراض (السعر)</td></tr><tr class=""><td>ذراع روبوت إخراج/مناولة قطع</td><td>إخراج القطعة المصبوبة، تقليل زمن الدورة وأضرار المظهر</td><td>غير منطبق</td><td>أدلة غير كافية</td><td>Wittmann، Sepro، Yushin</td><td>أدلة غير كافية</td></tr><tr class="alt"><td>مكبس لحام بالموجات فوق الصوتية</td><td>إحكام وصلة الغطاء بالقاعدة لتصنيف IP</td><td>≈1-3 ثوانٍ لحام + تحميل/تفريغ</td><td>أدلة غير كافية</td><td>Branson (Emerson)، Dukane، Herrmann Ultraschall، Rinco</td><td>أدلة غير كافية</td></tr><tr class=""><td>نظام توزيع حشية FIPFG</td><td>تطبيق حشية رغوية في الموضع لإحكام IP65</td><td>حبة مستمرة، حسب حجم القطعة</td><td>أدلة غير كافية</td><td>DOPAG، Sonderhoff (Henkel)، WinMan</td><td>أدلة غير كافية</td></tr><tr class="alt"><td>ماكينة كبس حراري/إدخالات نحاسية</td><td>تركيب إدخالات نحاسية ملولبة</td><td>أقل من 5 ثوانٍ/إدخال</td><td>أدلة غير كافية</td><td>Danrel، Sonics، Branson</td><td>أدلة غير كافية</td></tr><tr class=""><td>ماكينة طباعة بالوسادة</td><td>تطبيق الشعارات/الملصقات/التصنيفات</td><td>ثوانٍ قليلة/طبعة</td><td>أدلة غير كافية</td><td>Automark، TIC، Deco Tech</td><td>أدلة غير كافية</td></tr><tr class="alt"><td>غرفة اختبار اختراق IP65</td><td>التحقق من تصنيف IEC 60529</td><td>دقائق/اختبار</td><td>أدلة غير كافية (على الأرجح خانتان رقميتان بالآلاف دولار)</td><td>Applus+ Keystone (خدمة اختبار)</td><td>أدلة غير كافية</td></tr><tr class=""><td>معدات فحص أبعادي CMM</td><td>التحقق من الأبعاد الحرجة، استواء سطح الإحكام</td><td>غير منطبق</td><td>أدلة غير كافية</td><td>Zeiss، Hexagon، Mitutoyo (أسماء صناعية معيارية)</td><td>أدلة غير كافية</td></tr></tbody></table></div>
+<div class="note"><strong>ملاحظة الحجم: </strong>الصناديق في نطاق حجم Thalassa/Plexo/Fibox/Bopla (من حجم علبة حذاء إلى حقيبة) تعمل عادة على ماكينات 150-500 طن — استنتاج مبني على قواعد تحديد قوة الإغلاق العامة (القوة ≈ المساحة المسقطة × عامل ضغط خاص بالمادة)، وليس مصدرًا يُسمّي هذه الفئة تحديدًا.</div>
+<h2>5. ضبط الجودة والاختبارات</h2>
+<div class="step-card">
+        <h3>اختبار اختراق IP65</h3>
+        <p class="step-purpose">التحقق من الإحكام ضد الغبار (IP6X) ونفث الماء (IPX5) وفق IEC 60529 — يمكن إجراؤه داخليًا على عينات ضبط الجودة و/أو عبر مختبرات تصديق خارجية.</p>
+        <p class="step-equipment"><strong>المعدة: </strong>غرفة غبار (بودرة تلك، بشفط فراغي) وجهاز اختبار فوهة نفث مائي.</p>
+        
+        <div class="video-embed"><iframe src="https://www.youtube.com/embed/Hfb2QYB2rM4" title="Ingress Protection Testing to EN 60529" loading="lazy" allowfullscreen frameborder="0"></iframe></div>
+           <div class="video-meta"><div class="video-title">Ingress Protection Testing to EN 60529</div><div class="video-channel">Dr. EMC</div></div>
+        
+      </div>
+<div class="step-card">
+        <h3>اختبار IP — لقطات من مختبر معتمد</h3>
+        <p class="step-purpose">لقطات احترافية من مختبر معتمد لاختبار اختراق نفث الماء عالي الضغط.</p>
+        <p class="step-equipment"><strong>المعدة: </strong>جهاز اختبار نفث مائي في مختبر تصديق معتمد.</p>
+        
+        <div class="video-embed"><iframe src="https://www.youtube.com/embed/g5bCN7JV6p8" title="Ingress Protection IPX6 Testing: Exploring High Water Jet Resilience" loading="lazy" allowfullscreen frameborder="0"></iframe></div>
+           <div class="video-meta"><div class="video-title">Ingress Protection IPX6 Testing: Exploring High Water Jet Resilience</div><div class="video-channel">Applus+ Keystone</div></div>
+        
+      </div>
+<div class="step-card">
+        <h3>تصنيف مقاومة اللهب UL94 V-0</h3>
+        <p class="step-purpose">مؤكَّد: يُجرى اختبار/تصديق UL94 على مستوى مورد الراتنج (البطاقة الصفراء لـUL)، وليس من قِبل المُصنِّع القالب — مرتبط بالسماكة والتركيبة.</p>
+        <p class="step-equipment"><strong>المعدة: </strong>غير منطبق للمُصنِّع القالب — مسؤولية ضبط الجودة هي الحصول على راتنج ببطاقة صفراء سارية تطابق سماكة الجدار/اللون المُستخدمين بالضبط.</p>
+        <p class="step-evidence">موثّق عبر الوثائق التقنية لـProtolabs.</p>
+        <div class="video-missing">لم يُعثر على فيديو حقيقي موثّق لهذه الخطوة.</div>
+        <div class="note step-note"><strong>ملاحظة: </strong>لم يُتحقق بثقة من فيديو حقيقي لاختبار الحرق UL94 على أرض مصنع خاص بمُصنِّع صناديق هذه الجلسة — يُصنَّف كغير مؤكد بشكل مستقل بدلًا من التأكيد الجازم.</div>
+      </div>
+<div class="step-card">
+        <h3>اختبار الصدمة/السقوط IK</h3>
+        <p class="step-purpose">تقييم متانة الغلاف الميكانيكية وفق IEC 60335-2-24 / تصنيف الصدمة IK — ذو صلة بعلب التوصيل/التوزيع المُعرَّضة للصدمات الميدانية.</p>
+        <p class="step-equipment"><strong>المعدة: </strong>جهاز اختبار سقوط كرة فولاذية.</p>
+        
+        <div class="video-embed"><iframe src="https://www.youtube.com/embed/Vlrkf76ddUs" title="IEC 60335-2-24 Impact Test Demo — Steel Ball Drop Test for Enclosure Safety" loading="lazy" allowfullscreen frameborder="0"></iframe></div>
+           <div class="video-meta"><div class="video-title">IEC 60335-2-24 Impact Test Demo — Steel Ball Drop Test for Enclosure Safety</div><div class="video-channel">Sinuotek</div></div>
+        
+      </div>
+<h2>6. الفيديو المُجمَّع لجولة المصنع</h2>
+<div class="video-card video-card-compiled">
+        <div class="video-embed"><iframe src="https://www.youtube.com/embed/2qAnJy8x8WA" title="Plastics Injection Molding: Step-By-Step at the Factory — Field Notes" loading="lazy" allowfullscreen frameborder="0"></iframe></div>
+        <div class="video-meta"><div class="video-title">Plastics Injection Molding: Step-By-Step at the Factory — Field Notes</div><div class="video-channel">Camera Roll</div><p class="video-desc">جولة وثائقية عامة داخل عملية القولبة بالحقن للبلاستيك — مناولة الحبيبات الخام، دورة ماكينة القولبة بالحقن (الإغلاق، الحقن، التبريد، الإخراج)، والتشذيب/التشطيب اللاحق، مُصوَّرة في مصنع فعلي قيد التشغيل.</p></div>
+      </div>
+<div class="note"><strong>فجوة صريحة: </strong>لم يُعثر على فيديو جولة مصنع خاص بعلامة صناديق كهربائية تحديدًا (Fibox، Bopla، Schneider Thalassa، Legrand Plexo) علنًا على YouTube — تنشر هذه الشركات فيديوهات منتج/تسويق، وليس لقطات عملية. هذا فيديو حقيقي وموثّق لجولة قولبة بالحقن عامة، وليس خاصًا بالصناديق. البديل الاحتياطي: "Plastic Injection Molded Parts Manufacturing: Step-By-Step at the Factory" — RAPID DIRECT — youtube.com/watch?v=rHmVTb8WPmQ.</div>
+<h2>7. قائمة المصادر</h2>
+<ul class="single"><li>NCIM Eldorado Mold — جولة مصنع عملية تجهيز قالب الحقن — youtube.com/watch?v=kf5dmjOM-RE</li></ul>
+<ul class="single"><li>ConairGroup — رحلة حبة الراتنج عبر القولبة بالحقن والبثق — youtube.com/watch?v=SgsnZpL0744</li></ul>
+<ul class="single"><li>Camera Roll — القولبة بالحقن للبلاستيك خطوة بخطوة في المصنع — youtube.com/watch?v=2qAnJy8x8WA</li></ul>
+<ul class="single"><li>RAPID DIRECT — تصنيع قطع مقولبة بالحقن — youtube.com/watch?v=rHmVTb8WPmQ</li></ul>
+<ul class="single"><li>Industrilas — أساسيات الحشية الرغوية المُشكَّلة في الموضع (FIPFG) — youtube.com/watch?v=KDnTcciBm40</li></ul>
+<ul class="single"><li>ADTW Study — شرح عملية اللحام بالموجات فوق الصوتية — youtube.com/watch?v=TH5Pkj3ew7k</li></ul>
+<ul class="single"><li>Shenzhen Danrel Industrial — ماكينة كبس حراري آلية للإدخالات النحاسية — youtube.com/watch?v=e7K-RXiQno8</li></ul>
+<ul class="single"><li>Automark — كيف تعمل ماكينة الطباعة بالوسادة — youtube.com/watch?v=sq016InT-2k</li></ul>
+<ul class="single"><li>Dr. EMC — اختبار الحماية من الاختراق وفق EN 60529 — youtube.com/watch?v=Hfb2QYB2rM4</li></ul>
+<ul class="single"><li>Applus+ Keystone — اختبار نفث الماء IPX6 — youtube.com/watch?v=g5bCN7JV6p8</li></ul>
+<ul class="single"><li>Sinuotek — اختبار سقوط كرة فولاذية IEC 60335-2-24 — youtube.com/watch?v=Vlrkf76ddUs</li></ul>
+<ul class="single"><li>Formlabs — كيفية تقدير تكلفة القولبة بالحقن — formlabs.com</li></ul>
+<ul class="single"><li>Xometry — فهم تكلفة القولبة بالحقن للمُصنِّعين — xometry.com</li></ul>
+<ul class="single"><li>Plast Fab Works — حاسبة زمن دورة القولبة بالحقن (2026) — plastfabworks.com</li></ul>
+<ul class="single"><li>Meadoworks — أسعار ماكينات القولبة بالحقن 2026 — meadoworks.com</li></ul>
+<ul class="single"><li>Daoben Machinery — قائمة أسعار ماكينات القولبة بالحقن 2026 — daobenmachinery.com</li></ul>
+<ul class="single"><li>Protolabs — تصنيف UL 94 والمواد البلاستيكية المقاومة للهب — protolabs.com</li></ul>
+    </section>
+  </main>
+  </div>
+      <div class="lang-block" data-lang="en" dir="ltr" lang="en">
+    <header class="cover mfg-cover">
+      <div class="cover-eyebrow">Research Prompt Output: Production Lines & Equipment</div>
+      <h1 class="cover-title">Manufacturing Methods &amp; Production Lines</h1>
+      <div class="cover-subtitle">Equipment, Process Steps &amp; Real Video Demonstrations for the 3 Selected Opportunities</div>
+      <p class="cover-note1">This section is a research prompt output, not a market study: for each of the three products selected in the Phase 1 screening report, it documents the standard industrial manufacturing process, the equipment used at each stage, and real, verified video demonstrations of each step — sourced from official equipment-manufacturer channels, real factory-tour footage, and accredited test-lab videos. No video link was invented: where no suitable real video could be found for a step, this is stated explicitly rather than filled with a fabricated link. Every cost/throughput figure follows the same evidence discipline as the main report: Verified Fact / Calculated / Estimate / Assumption, or "Insufficient Evidence."</p>
+    </header>
+    <nav class="toc">
+      <div class="toc-title">Products</div>
+      <ol><li><a href="#en-mfg-lv">LV Switchboards, MCC/ATS, Control &amp; Protection Panels</a></li><li><a href="#en-mfg-bess">BESS AC/DC Distribution Equipment &amp; Transformers</a></li><li><a href="#en-mfg-plastics">Engineering Plastics / Electrical Enclosures</a></li></ol>
+    </nav>
+    <main>
+    <section id="en-mfg-lv">
+      <h1>LV Switchboards, MCC/ATS, Control &amp; Protection Panels</h1>
+      <h2>1. Product Overview</h2>
+<p>A low-voltage (LV) switchboard/panel — including Motor Control Centers (MCC), Automatic Transfer Switches (ATS), and control/protection panels — is a factory-built electrical assembly that houses circuit breakers, contactors, busbars, and control gear inside a metal enclosure, distributing and protecting electrical power for a building, plant, or grid connection point. The governing international standard is IEC 61439 ("Low-voltage switchgear and controlgear assemblies"), which replaced the older IEC 60439 and requires both design (type) verification and per-unit routine verification before a panel can be sold as a compliant assembly. This standard drives most of the QA/testing steps described below.</p>
+<h2>2. Production Line — Process Overview</h2>
+<ul class="single"><li>1. Sheet metal cutting (laser/punch) of enclosure panels, doors, gland plates, and busbar stock</li></ul>
+<ul class="single"><li>2. CNC bending/forming of enclosure bodies, doors, and frames</li></ul>
+<ul class="single"><li>3. Welding/joining of frame corners, mounting studs, and structural joints</li></ul>
+<ul class="single"><li>4. Surface treatment — degreasing, phosphating, rinse, dry (pretreatment before coating)</li></ul>
+<ul class="single"><li>5. Powder coating / electrostatic painting and oven curing</li></ul>
+<ul class="single"><li>6. Busbar fabrication — copper/aluminum CNC punching, shearing, and bending</li></ul>
+<ul class="single"><li>7. Component mounting — breakers, contactors, relays, terminals, DIN rails</li></ul>
+<ul class="single"><li>8. Internal wiring &amp; cable routing — cutting, stripping, crimping, ferruling, labeling</li></ul>
+<ul class="single"><li>9. Door/HMI/control assembly — meters, indicator lamps, interlocks</li></ul>
+<ul class="single"><li>10. IEC 61439 verification — routine tests on every unit + type tests on the design</li></ul>
+<ul class="single"><li>11. Final QA / Factory Acceptance Test (FAT) — visual, functional, continuity, documentation</li></ul>
+<ul class="single"><li>12. Packaging &amp; dispatch</li></ul>
+<h2>3. Step-by-Step: Equipment &amp; Real Video Demonstrations</h2>
+<div class="step-card">
+        <h3>Step 1 — Sheet Metal Cutting (Laser/Punch)</h3>
+        <p class="step-purpose">Cut enclosure panels, doors, gland plates, mounting plates, and cable-entry cutouts from coil/sheet steel.</p>
+        <p class="step-equipment"><strong>Equipment: </strong>CNC fiber laser cutting machine (2–12 kW) or CNC turret punch press.</p>
+        <p class="step-evidence">Throughput: Insufficient Evidence for a panel-specific cycle time (varies with sheet thickness and cutout complexity). Price (SME/mid-scale, 3–6kW): $135,000–$196,000; large-format/thick-plate systems $282,000+ [Estimate — piranhafab.com, 2024/25].</p>
+        <div class="video-embed"><iframe src="https://www.youtube.com/embed/1p7q8iUupmE" title="CNC Fiber Laser Cutting Machine For Electrical Panel Board Manufacturing" loading="lazy" allowfullscreen frameborder="0"></iframe></div>
+           <div class="video-meta"><div class="video-title">CNC Fiber Laser Cutting Machine For Electrical Panel Board Manufacturing</div><div class="video-channel">TL Pathak Group – Machines For Future</div></div>
+        
+      </div>
+<div class="step-card">
+        <h3>Step 2 — CNC Bending / Forming</h3>
+        <p class="step-purpose">Form flat blanks into enclosure bodies, doors, and frames with precision bend angles.</p>
+        <p class="step-equipment"><strong>Equipment: </strong>CNC panel bender (e.g., Salvagnini P-series) or CNC press brake.</p>
+        <p class="step-evidence">Price: entry-level $50,000–$100,000; mid-range $100,000–$250,000; high-end full-automation $250,000–$500,000+ [Estimate — krrass.com, 2026]. Press brake alternative by tonnage: 40–63t $16,500–$25,000 up to 500–600t $65,000–$95,000+ [Estimate — ruchengmachinery.com, 2026].</p>
+        <div class="video-embed"><iframe src="https://www.youtube.com/embed/Wupf_dMFOac" title="Salvagnini panel bending: streamline sheet metal working with P4 panel bender" loading="lazy" allowfullscreen frameborder="0"></iframe></div>
+           <div class="video-meta"><div class="video-title">Salvagnini panel bending: streamline sheet metal working with P4 panel bender</div><div class="video-channel">Salvagnini</div></div>
+        
+      </div>
+<div class="step-card">
+        <h3>Step 3 — Welding / Joining</h3>
+        <p class="step-purpose">Join frame members, weld mounting studs/nuts, close seams on welded enclosure frames.</p>
+        <p class="step-equipment"><strong>Equipment: </strong>Robotic MIG welding cell / laser welding cell for enclosure frames.</p>
+        <p class="step-evidence">Price: basic robotic cell $10,000–$50,000; mid-range $50,000–$150,000; advanced $150,000–$500,000+ (plus $10-25k installation, $3-10k programming) [Estimate — evsint.com, 2026].</p>
+        <div class="video-embed"><iframe src="https://www.youtube.com/embed/gtjrucoI8a8" title="Electrical Enclosure Robot Welding" loading="lazy" allowfullscreen frameborder="0"></iframe></div>
+           <div class="video-meta"><div class="video-title">Electrical Enclosure Robot Welding</div><div class="video-channel">KDM Steel</div></div>
+        
+      </div>
+<div class="step-card">
+        <h3>Step 4 — Surface Treatment (Degreasing, Phosphating)</h3>
+        <p class="step-purpose">Remove oils/oxides and create a conversion coating for paint adhesion and corrosion resistance before powder coating.</p>
+        <p class="step-equipment"><strong>Equipment: </strong>Multi-stage pretreatment tunnel/dip line (degrease → rinse → phosphate → rinse → dry).</p>
+        <p class="step-evidence">Insufficient Evidence for a panel-specific cost/throughput figure; this stage is typically bundled with the powder-coating line cost below and visible at the entry of the coating-line video.</p>
+        <div class="video-missing">No verified video found for this step.</div>
+        <div class="note step-note"><strong>Note: </strong>No dedicated real video isolating just this stage was found — it is visible as the entry section of the powder-coating line video below.</div>
+      </div>
+<div class="step-card">
+        <h3>Step 5 — Powder Coating / Electrostatic Painting</h3>
+        <p class="step-purpose">Apply a durable, corrosion-resistant, insulating coating (typically RAL 7035/7032) via electrostatic spray, then cure in an oven.</p>
+        <p class="step-equipment"><strong>Equipment: </strong>Automated electrostatic powder-coating line (spray booth + cure oven + conveyor).</p>
+        <p class="step-evidence">Price: production-grade automated line $200,000–$2,000,000 installed; very large/high-throughput systems can exceed $10,000,000 [Estimate — reliantfinishingsystems.com, 2023]. SME operations more often use a manual/batch booth at a lower cost (not separately priced).</p>
+        <div class="video-embed"><iframe src="https://www.youtube.com/embed/evZxQiX6h70" title="Industrial Enclosure Powder Coating Line" loading="lazy" allowfullscreen frameborder="0"></iframe></div>
+           <div class="video-meta"><div class="video-title">Industrial Enclosure Powder Coating Line</div><div class="video-channel">Tekpan</div></div>
+        
+      </div>
+<div class="step-card">
+        <h3>Step 6 — Busbar Fabrication (Copper Bending &amp; Punching)</h3>
+        <p class="step-purpose">Cut, punch (bolted-connection hole patterns), and bend copper/aluminum busbars to the exact 3D geometry needed inside the panel.</p>
+        <p class="step-equipment"><strong>Equipment: </strong>CNC busbar processing machine (combined punching + shearing + bending).</p>
+        <p class="step-evidence">Price: Assumption only — suppliers (payapress.com, busbarmachine.co) withhold public pricing; general market listings suggest roughly $15,000–$120,000+ depending on automation level.</p>
+        <div class="video-embed"><iframe src="https://www.youtube.com/embed/oR9LQpaPpw0" title="CNC Busbar Bending Machine + CNC Busbar Punch &amp; Shear Machine + Dual-Head Press Bending Machine" loading="lazy" allowfullscreen frameborder="0"></iframe></div>
+           <div class="video-meta"><div class="video-title">CNC Busbar Bending Machine + CNC Busbar Punch &amp; Shear Machine + Dual-Head Press Bending Machine</div><div class="video-channel">Jinan Fenghua CNC Equipment Co., Ltd.</div></div>
+        <div class="note step-note"><strong>Note: </strong>This is a YouTube Short (under 60 seconds) — good for seeing the machine in action, not a full walkthrough.</div>
+      </div>
+<div class="step-card">
+        <h3>Step 7 — Component Mounting (Breakers, Contactors, Relays, Terminals)</h3>
+        <p class="step-purpose">Fit DIN rails, mounting plates, circuit breakers, contactors, relays, terminal blocks onto the coated enclosure back-plate.</p>
+        <p class="step-equipment"><strong>Equipment: </strong>Largely manual/semi-automated bench assembly work (torque screwdrivers, DIN-rail cutting/punching tools).</p>
+        <p class="step-evidence">Labor-hour driven, not machine-throughput driven — Insufficient Evidence for a public benchmark figure.</p>
+        <div class="video-missing">No verified video found for this step.</div>
+        <div class="note step-note"><strong>Note: </strong>No standalone verified video isolating only this stage was found; it appears within the compiled factory-tour videos in Section 5 below.</div>
+      </div>
+<div class="step-card">
+        <h3>Step 8 — Internal Wiring &amp; Cable Routing</h3>
+        <p class="step-purpose">Cut, strip, crimp, ferrule, label, and route internal control/power wiring between components per the wiring diagram.</p>
+        <p class="step-equipment"><strong>Equipment: </strong>Automatic wire cutting/stripping/crimping machine; automatic wire labeling/printing machine.</p>
+        <p class="step-evidence">Insufficient Evidence for panel-specific throughput figures.</p>
+        <div class="video-embed"><iframe src="https://www.youtube.com/embed/rWue0t2M0wE" title="Automatic Real-time Printing Labeling Machine for Wires and Cables" loading="lazy" allowfullscreen frameborder="0"></iframe></div>
+           <div class="video-meta"><div class="video-title">Automatic Real-time Printing Labeling Machine for Wires and Cables</div><div class="video-channel">Suzhou Sanao Co., Ltd.</div></div>
+        <div class="note step-note"><strong>Note: </strong>This YouTube Short shows wire labeling specifically, not the full wiring-bay process — treat as illustrative of one sub-step only.</div>
+      </div>
+<h2>4. Equipment List — Full Table</h2>
+<div class="table-wrap"><table><colgroup><col style="width:20.00%"><col style="width:20.00%"><col style="width:12.00%"><col style="width:18.00%"><col style="width:18.00%"><col style="width:12.00%"></colgroup><thead><tr><th>Equipment</th><th>Function</th><th>Approx. Throughput</th><th>Approx. Price Range (new)</th><th>Example Suppliers</th><th>Evidence</th></tr></thead><tbody><tr class=""><td>CNC fiber laser cutting machine (3–6kW)</td><td>Cut sheet-metal blanks/cutouts</td><td>Insufficient Evidence</td><td>$135,000–$196,000 (SME/mid); $282,000+ (large-format)</td><td>Piranha, Bystronic, Trumpf, Amada, Bodor</td><td>Estimate</td></tr><tr class="alt"><td>CNC turret punch press</td><td>Punch cutouts/holes in sheet metal</td><td>Insufficient Evidence</td><td>Not sourced this session</td><td>Amada, Trumpf</td><td>Insufficient Evidence</td></tr><tr class=""><td>CNC panel bender (automatic bending center)</td><td>Form enclosure bodies, doors, frames</td><td>Insufficient Evidence</td><td>Entry $50K–$100K; mid $100K–$250K; high-end $250K–$500K+</td><td>Salvagnini, Trumpf, Amada, Krrass</td><td>Estimate</td></tr><tr class="alt"><td>CNC press brake</td><td>Alternative/complement bending</td><td>Insufficient Evidence</td><td>40–63t: $16.5K–$25K; up to 500–600t: $65K–$95K+</td><td>Accurl, Durma</td><td>Estimate</td></tr><tr class=""><td>Robotic welding cell</td><td>Weld enclosure frames/joints</td><td>Insufficient Evidence</td><td>Basic $10K–$50K; advanced $150K–$500K+</td><td>Fanuc, ABB, KUKA-integrated</td><td>Estimate</td></tr><tr class="alt"><td>Pretreatment line (degrease/phosphate)</td><td>Prepare surface for coating</td><td>Insufficient Evidence</td><td>Typically bundled into coating-line cost</td><td>Various finishing integrators</td><td>Insufficient Evidence</td></tr><tr class=""><td>Automated powder-coating line</td><td>Apply/cure protective coating</td><td>Insufficient Evidence</td><td>$200K–$2M installed; very large systems $10M+</td><td>Nordson, Gema, Wagner, IntelliFinishing</td><td>Estimate</td></tr><tr class="alt"><td>CNC busbar processing machine</td><td>Fabricate copper/aluminum busbars</td><td>Insufficient Evidence</td><td>≈$15K–$120K+ (Assumption)</td><td>EHRT, Jinan Fenghua, BusbarMachine.co</td><td>Assumption</td></tr><tr class=""><td>Wire crimping/stripping machine</td><td>Prepare internal wiring</td><td>Insufficient Evidence</td><td>Not sourced this session</td><td>Kingsing, Eastontech, Bettertech</td><td>Insufficient Evidence</td></tr><tr class="alt"><td>Wire/cable labeling &amp; printing machine</td><td>Label internal wiring per drawing</td><td>Insufficient Evidence</td><td>Not sourced this session</td><td>Suzhou Sanao, Kingsing</td><td>Insufficient Evidence</td></tr><tr class=""><td>Hipot / dielectric withstand tester</td><td>Routine + type dielectric test</td><td>Per-unit, minutes</td><td>50kV class ≈$2,400–$6,600; 100kV class ≈$5,500–$8,400</td><td>ATO, Vitrek, HV Hipot</td><td>Verified Fact (price list)</td></tr><tr class="alt"><td>Insulation resistance tester (Megger)</td><td>Insulation resistance routine test</td><td>Per-unit</td><td>Not sourced this session</td><td>Megger, Fluke</td><td>Insufficient Evidence</td></tr><tr class=""><td>High-power short-circuit test station</td><td>Type-test short-circuit withstand</td><td>N/A — type test</td><td>Outsourced lab service, not purchased equipment</td><td>CESI (KEMA Labs), independent HV labs</td><td>N/A — outsourced service</td></tr></tbody></table></div>
+<div class="note"><strong>Scale note: </strong>The press brake/panel bender/robotic welding entries scale from SME (lower tiers) to large industrial plant (upper tiers); powder-coating and laser-cutting price bands quoted are generally mid-to-large-plant figures — a smaller SME line typically uses a lower-power laser, a manual/batch powder-coat booth, and semi-manual busbar tools, sitting well below these ranges.</div>
+<h2>5. Quality Control &amp; Testing (IEC 61439)</h2>
+<p>IEC 61439-1/-2 splits verification into design (type) verification — done once per assembly design/rating, via test or by comparison with a tested reference design — and routine verification, done on every single assembled unit before dispatch.</p>
+<div class="step-card">
+        <h3>Dielectric / Insulation Resistance Test</h3>
+        <p class="step-purpose">Verify insulation integrity — no breakdown under overvoltage. Both routine (reduced level) and type (full level).</p>
+        <p class="step-equipment"><strong>Equipment: </strong>Hipot tester / AC dielectric test set; insulation resistance tester (Megger).</p>
+        <p class="step-evidence">No dedicated real video isolating this specific test on an LV panel was confidently verified this session.</p>
+        <div class="video-missing">No verified video found for this step.</div>
+        <div class="note step-note"><strong>Note: </strong>Flagged as an open gap rather than filled with a fabricated video.</div>
+      </div>
+<div class="step-card">
+        <h3>Short-Circuit Withstand Test</h3>
+        <p class="step-purpose">Confirm the assembly and its busbars/supports withstand the prospective short-circuit current without mechanical failure. Type test only, performed at an accredited independent lab (e.g., CESI/KEMA Labs).</p>
+        <p class="step-equipment"><strong>Equipment: </strong>High-power test station (generator/transformer bank capable of delivering kA-level fault currents).</p>
+        
+        <div class="video-embed"><iframe src="https://www.youtube.com/embed/850Q_TydWDs" title="Short-Circuit Withstand Test on Low Voltage Switchgear" loading="lazy" allowfullscreen frameborder="0"></iframe></div>
+           <div class="video-meta"><div class="video-title">Short-Circuit Withstand Test on Low Voltage Switchgear</div><div class="video-channel">High Volt Academy</div></div>
+        
+      </div>
+<div class="step-card">
+        <h3>High-Voltage / Dielectric Factory Testing (illustrative analog)</h3>
+        <p class="step-purpose">Illustrates in-factory HV/dielectric testing workflow practice on switchgear.</p>
+        <p class="step-equipment"><strong>Equipment: </strong>HV test set, live production-line testing station.</p>
+        
+        <div class="video-embed"><iframe src="https://www.youtube.com/embed/B6kKgItdKWE" title="High Voltage Testing on MV Switchgear (Live From Factory)" loading="lazy" allowfullscreen frameborder="0"></iframe></div>
+           <div class="video-meta"><div class="video-title">High Voltage Testing on MV Switchgear (Live From Factory)</div><div class="video-channel">Gaurav J - TheElectricalGuy</div></div>
+        <div class="note step-note"><strong>Note: </strong>This is MV (medium-voltage) switchgear testing, not LV-specific — used as an illustrative analog of factory-based testing practice, not a literal LV citation.</div>
+      </div>
+<div class="step-card">
+        <h3>Protection Rating (IP) Test &amp; Mechanical Operation Test</h3>
+        <p class="step-purpose">IP test verifies ingress protection against dust/water per IEC 60529; mechanical operation test verifies doors/interlocks/breaker mechanisms function through repeated cycles.</p>
+        <p class="step-equipment"><strong>Equipment: </strong>Dust chamber, water-jet/spray test rig; manual/automated cycling rig.</p>
+        <p class="step-evidence">No verified real YouTube video specific to LV panels was found for either test this session.</p>
+        <div class="video-missing">No verified video found for this step.</div>
+        <div class="note step-note"><strong>Note: </strong>Flagged as an open research gap — a follow-up search directly on manufacturer channels (Schneider, ABB, Hager, Legrand) or accredited lab channels (CESI/KEMA, TÜV, Intertek) would likely surface these.</div>
+      </div>
+<h2>6. Compiled Factory-Tour Video</h2>
+<div class="video-card video-card-compiled">
+        <div class="video-embed"><iframe src="https://www.youtube.com/embed/wTHSDTWQCas" title="Electrical Panel Manufacturing Factory | Panel Board Making Process | How It's Made" loading="lazy" allowfullscreen frameborder="0"></iframe></div>
+        <div class="video-meta"><div class="video-title">Electrical Panel Manufacturing Factory | Panel Board Making Process | How It's Made</div><div class="video-channel">Unbox Factory</div><p class="video-desc">A general-audience "how it's made"-style walkthrough of an electrical panel/switchboard factory — cutting, forming, assembly, and wiring shown in sequence.</p></div>
+      </div>
+<p>Alternate: "How Electrical Switchboards are made? | Factories in Poland" — channel Factories — youtube.com/watch?v=mX0y9wIUC_U — a European switchboard-factory tour from a real-footage industrial documentary channel.</p>
+<h2>7. Sources</h2>
+<ul class="single"><li>TL Pathak Group — CNC Fiber Laser Cutting for electrical panel boards — youtube.com/watch?v=1p7q8iUupmE</li></ul>
+<ul class="single"><li>Salvagnini — P4 panel bender demonstration — youtube.com/watch?v=Wupf_dMFOac</li></ul>
+<ul class="single"><li>KDM Steel — Electrical Enclosure Robot welding — youtube.com/watch?v=gtjrucoI8a8</li></ul>
+<ul class="single"><li>Tekpan — Industrial enclosure powder coating line — youtube.com/watch?v=evZxQiX6h70</li></ul>
+<ul class="single"><li>Jinan Fenghua CNC Equipment — CNC busbar bending/punching/shear machine — youtube.com/shorts/oR9LQpaPpw0</li></ul>
+<ul class="single"><li>Suzhou Sanao — Automatic wire labeling machine — youtube.com/shorts/rWue0t2M0wE</li></ul>
+<ul class="single"><li>High Volt Academy — Short-Circuit Withstand Test on LV Switchgear — youtube.com/shorts/850Q_TydWDs</li></ul>
+<ul class="single"><li>Gaurav J - TheElectricalGuy — High Voltage Testing on MV Switchgear (Live From Factory) — youtube.com/watch?v=B6kKgItdKWE</li></ul>
+<ul class="single"><li>Unbox Factory — Electrical Panel Manufacturing Factory — youtube.com/watch?v=wTHSDTWQCas</li></ul>
+<ul class="single"><li>Factories — How Electrical Switchboards are made? Factories in Poland — youtube.com/watch?v=mX0y9wIUC_U</li></ul>
+<ul class="single"><li>Piranha Fabrication — fiber laser cutting machine cost — piranhafab.com</li></ul>
+<ul class="single"><li>Krrass — CNC panel bender price guide 2026 — krrass.com</li></ul>
+<ul class="single"><li>Rucheng Machinery — CNC press brake price guide 2026 — ruchengmachinery.com</li></ul>
+<ul class="single"><li>EVS International — welding robot cost guide 2026 — evsint.com</li></ul>
+<ul class="single"><li>Reliant Finishing Systems — industrial powder coating system cost — reliantfinishingsystems.com</li></ul>
+<ul class="single"><li>ATO — hipot tester price list 2025 — ato.com</li></ul>
+<ul class="single"><li>Schneider Electric — electrical switchboard manufacturing-area organization (process-sequence cross-check) — blog.se.com</li></ul>
+    </section>
+  
+
+    <section id="en-mfg-bess">
+      <h1>BESS AC/DC Distribution Equipment &amp; Transformers</h1>
+      <h2>1. Product Overview</h2>
+<p>This report covers the AC/DC distribution cabinets, combiner boxes, and switchgear assemblies that sit around a Battery Energy Storage System (BESS) installation — not the battery cells, modules, or power-electronics inverters themselves. Physically, these are a variant of general IEC 61439 LV switchgear/enclosure manufacturing with BESS-specific components added: DC disconnect switches, DC-rated fuses/breakers, battery string/rack combiner terminals, surge protection devices, weatherproof (IP/NEMA-rated) enclosures, and CAN bus/RS485 communication wiring to the battery management system (BMS).</p>
+<div class="note"><strong>Scope note: </strong>There is essentially no publicly available YouTube footage of a BESS-specific combiner-box or DC-distribution-cabinet production line at a component/OEM level. None of the major integrators (Sungrow, Huawei, CATL, Fluence, Wärtsilä, Powin) has published a factory tour of their AC/DC combiner or switchgear cabinet line. Every stage below is illustrated with real, verified general LV switchgear/enclosure manufacturing footage, explicitly labeled as a substitute where BESS-specific footage does not exist. This absence itself is informative: this segment is built quietly by the same panel-shop/job-shop ecosystem the investor is already part of, rather than by a dedicated, publicized manufacturing line.</div>
+<h2>2. Production Line — Process Overview</h2>
+<ul class="single"><li>1. Design engineering &amp; panel layout (IEC 61439 verification, busbar sizing, DC arc-rating, enclosure IP/NEMA rating selection) — not a filmable physical stage</li></ul>
+<ul class="single"><li>2. Sheet metal fabrication — CNC laser/punch cutting of enclosure panels, doors, gland plates, mounting frames</li></ul>
+<ul class="single"><li>3. CNC press-brake forming/bending of cut blanks into enclosure body, doors, chassis</li></ul>
+<ul class="single"><li>4. Frame/enclosure welding &amp; assembly (for welded vs. bolted/riveted construction)</li></ul>
+<ul class="single"><li>5. Surface treatment — pretreatment + powder coating (thicker/marine-grade coats for outdoor/coastal/desert-dust environments relevant to Egypt)</li></ul>
+<ul class="single"><li>6. Busbar fabrication — AC busbars and DC+/DC− busbars (polarity-coded per UL/IEC DC convention)</li></ul>
+<ul class="single"><li>7. Component mounting &amp; internal wiring/harnessing — DC disconnects, DC fuses/MCCBs, combiner terminals, SPDs, AC breakers, CAN/RS485 comms modules</li></ul>
+<ul class="single"><li>8. Gasketing/sealing &amp; IP/NEMA hardware fitting — door gaskets, cable glands, breather/drain vents, thermal-management fan/louver fitting</li></ul>
+<ul class="single"><li>9. Quality control &amp; Factory Acceptance Testing — dielectric, IP/NEMA ingress, comms loop test, functional test</li></ul>
+<ul class="single"><li>10. Packing &amp; shipping</li></ul>
+<h2>3. Step-by-Step: Equipment &amp; Real Video Demonstrations</h2>
+<div class="step-card">
+        <h3>Step 1 — Sheet Metal Cutting</h3>
+        <p class="step-purpose">Cut enclosure panels, doors, back-plates, gland plates from cold-rolled steel, galvanized steel, stainless (304/316 for coastal/outdoor BESS), or aluminum sheet.</p>
+        <p class="step-equipment"><strong>Equipment: </strong>Fiber laser cutting machines or CNC turret punch presses.</p>
+        <p class="step-evidence">Throughput: Estimate — a modern 4-6kW fiber laser cuts a typical 2mm steel panel set in well under 5 minutes; Insufficient Evidence for a BESS-cabinet-specific cycle time. Price: SME ≈$80K–$250K; large plant $300K–$1M+ [Estimate, 2025-26 industry guides].</p>
+        <div class="video-embed"><iframe src="https://www.youtube.com/embed/QhsI415LDoA" title="How Electronic Enclosure Is Made | Inside RapidDirect's Sheet Metal Fabrication Factory" loading="lazy" allowfullscreen frameborder="0"></iframe></div>
+           <div class="video-meta"><div class="video-title">How Electronic Enclosure Is Made | Inside RapidDirect's Sheet Metal Fabrication Factory</div><div class="video-channel">RAPID DIRECT</div></div>
+        <div class="note step-note"><strong>Note: </strong>General sheet-metal enclosure fabrication factory tour (not BESS-specific) — substitute footage.</div>
+      </div>
+<div class="step-card">
+        <h3>Step 2 — CNC Press-Brake Bending</h3>
+        <p class="step-purpose">Form flat blanks into 3D enclosure bodies, doors, and gland/mounting plates to precise tolerances for door alignment and gasket seating.</p>
+        <p class="step-equipment"><strong>Equipment: </strong>CNC hydraulic/electric press brakes.</p>
+        <p class="step-evidence">Cycle: Estimate, ~10-30 sec/bend. Price: SME $40K–$150K; large plant $200K+ [Estimate].</p>
+        <div class="video-embed"><iframe src="https://www.youtube.com/embed/3X6fVzwek5I" title="CNC Press Brakes, Precise and Efficient, to Create a Variety of Metal Boxes" loading="lazy" allowfullscreen frameborder="0"></iframe></div>
+           <div class="video-meta"><div class="video-title">CNC Press Brakes, Precise and Efficient, to Create a Variety of Metal Boxes</div><div class="video-channel">JUGAO CNC MACHINE JIANGSU CO LTD</div></div>
+        <div class="note step-note"><strong>Note: </strong>General box/cabinet-shell forming (substitute footage).</div>
+      </div>
+<div class="step-card">
+        <h3>Step 3 — Frame/Enclosure Welding</h3>
+        <p class="step-purpose">Join formed panels into a rigid welded chassis for heavier-duty/outdoor BESS enclosures; weld mounting studs and reinforcement.</p>
+        <p class="step-equipment"><strong>Equipment: </strong>Robotic MIG/TIG welding cells or robotic laser welding cells purpose-built for electrical cabinet production.</p>
+        <p class="step-evidence">Price: $80K–$400K per cell [Estimate].</p>
+        <div class="video-embed"><iframe src="https://www.youtube.com/embed/UqLmczS1Qi0" title="Laser Welding Solution for the Production of Electrical Cabinets with Robots" loading="lazy" allowfullscreen frameborder="0"></iframe></div>
+           <div class="video-meta"><div class="video-title">Laser Welding Solution for the Production of Electrical Cabinets with Robots</div><div class="video-channel">AWL</div></div>
+        <div class="note step-note"><strong>Note: </strong>Directly on-topic — robotic welding specifically for electrical cabinet manufacturing.</div>
+      </div>
+<div class="step-card">
+        <h3>Step 4 — Surface Treatment / Powder Coating</h3>
+        <p class="step-purpose">Corrosion protection and finish — critical for outdoor NEMA 3R/4/4X or IP54-IP66 rated BESS enclosures exposed to weather, coastal salt air, or desert dust/UV (directly relevant to Egypt).</p>
+        <p class="step-equipment"><strong>Equipment: </strong>Multi-stage pretreatment wash + electrostatic powder spray booth + cure oven.</p>
+        <p class="step-evidence">Price: SME batch line $50K–$150K; full automated line $300K–$1M+ [Estimate, fannoninfrared.com / ems-powdercoating.com, 2025-26].</p>
+        <div class="video-embed"><iframe src="https://www.youtube.com/embed/-phThemjJTM" title="Powder Coating Line for Switch Gear and Electric Panel" loading="lazy" allowfullscreen frameborder="0"></iframe></div>
+           <div class="video-meta"><div class="video-title">Powder Coating Line for Switch Gear and Electric Panel</div><div class="video-channel">Prism Surface Coatings Pvt Ltd</div></div>
+        <div class="note step-note"><strong>Note: </strong>Explicitly switchgear/panel-labeled — closer match than a generic coating video.</div>
+      </div>
+<div class="step-card">
+        <h3>Step 5 — Busbar Fabrication (AC + DC)</h3>
+        <p class="step-purpose">Cut, punch, bend, and polarity-mark copper/aluminum busbars carrying AC feeder current and DC string/battery current; DC busbars require careful clearance/creepage design since DC arcs don't self-extinguish at zero-crossing like AC.</p>
+        <p class="step-equipment"><strong>Equipment: </strong>CNC busbar processing machines (combined punch/bend/cut/shear).</p>
+        <p class="step-evidence">Throughput: Estimate, ~20-40 pieces/hour (manufacturer marketing figures, unverified primary source).</p>
+        <div class="video-embed"><iframe src="https://www.youtube.com/embed/yuHiRJuWwas" title="6-Axis CNC Busbar Punching Cutting Machine for Electrical Cabinet Production" loading="lazy" allowfullscreen frameborder="0"></iframe></div>
+           <div class="video-meta"><div class="video-title">6-Axis CNC Busbar Punching Cutting Machine for Electrical Cabinet Production</div><div class="video-channel">ERSM Sheet Metal Solutions</div></div>
+        <div class="note step-note"><strong>Note: </strong>Explicitly ties busbar machining to cabinet production.</div>
+      </div>
+<div class="step-card">
+        <h3>Step 6 — Component Mounting &amp; Wire Harness/Cabling</h3>
+        <p class="step-purpose">DIN-rail/panel mounting of DC disconnect switches, DC fuses/breakers, string/rack combiner terminal blocks, SPDs, AC MCCBs, relays, and BMS/monitoring communication modules (CAN bus, RS485/Modbus); crimping, lugging, and routing of power and control wiring.</p>
+        <p class="step-equipment"><strong>Equipment: </strong>DIN-rail punch/mounting tools, wire crimping and ferruling machines, torque-controlled screwdrivers for DC terminal tightening (critical to avoid resistive heating/fire risk).</p>
+        <p class="step-evidence">Insufficient Evidence for BESS-cabinet-specific labor-hours — this stage is hand-built, labor-hour driven, not machine-cycle driven.</p>
+        <div class="video-embed"><iframe src="https://www.youtube.com/embed/W70T8vOS13o" title="Industrial Electrical Panel Wiring and Assembly for Beginners and Professionals" loading="lazy" allowfullscreen frameborder="0"></iframe></div>
+           <div class="video-meta"><div class="video-title">Industrial Electrical Panel Wiring and Assembly for Beginners and Professionals</div><div class="video-channel">IET-76</div></div>
+        <div class="note step-note"><strong>Note: </strong>Component-level substitute — directly analogous to combiner-cabinet internal wiring, not BESS-specific footage.</div>
+      </div>
+<div class="step-card">
+        <h3>Step 7 — Gasketing, Sealing &amp; IP-Rating Hardware</h3>
+        <p class="step-purpose">Fit door gaskets, cable glands, breather/drain valves and, for weatherproof outdoor BESS cabinets, sealed fan/louver or heat-exchanger units for thermal management, to achieve the specified IP/NEMA rating.</p>
+        <p class="step-equipment"><strong>Equipment: </strong>Formed-in-place foam gasket (FIPFG) dispensing/CNC robots.</p>
+        <p class="step-evidence">Insufficient Evidence for throughput/cost figures this session.</p>
+        <div class="video-embed"><iframe src="https://www.youtube.com/embed/q8z6C7GGLJ4" title="CNC Foam Gasket for Enclosure Door &amp; Cover Sealing, Robust and Maintenance-Free Design" loading="lazy" allowfullscreen frameborder="0"></iframe></div>
+           <div class="video-meta"><div class="video-title">CNC Foam Gasket for Enclosure Door &amp; Cover Sealing, Robust and Maintenance-Free Design</div><div class="video-channel">WINMAN</div></div>
+        
+      </div>
+<h2>4. Equipment List — Full Table</h2>
+<div class="table-wrap"><table><colgroup><col style="width:20.00%"><col style="width:20.00%"><col style="width:12.00%"><col style="width:18.00%"><col style="width:18.00%"><col style="width:12.00%"></colgroup><thead><tr><th>Equipment</th><th>Function</th><th>Approx. Throughput</th><th>Approx. Price Range</th><th>Example Suppliers</th><th>Evidence</th></tr></thead><tbody><tr class=""><td>Fiber laser cutting machine (4–12kW)</td><td>Cut enclosure panels/doors</td><td>Minutes per panel set</td><td>SME $80K–$250K; Large $300K–$1M+</td><td>Trumpf, Bystronic, Amada, Han's Laser, Bodor</td><td>Estimate</td></tr><tr class="alt"><td>CNC turret punch press</td><td>Complement/alternative to laser</td><td>Seconds per hit</td><td>$150K–$500K</td><td>Amada, Murata, Trumpf</td><td>Estimate</td></tr><tr class=""><td>CNC press brake</td><td>Bend blanks into enclosure bodies/doors</td><td>10-30 sec/bend</td><td>SME $40K–$150K; Large $200K+</td><td>Amada, LVD, Durma, JUGAO</td><td>Estimate</td></tr><tr class="alt"><td>Robotic MIG/TIG or laser welding cell</td><td>Weld enclosure frames/seams</td><td>Insufficient Evidence</td><td>$80K–$400K per cell</td><td>AWL, KUKA-integrated, Panasonic</td><td>Estimate</td></tr><tr class=""><td>Pretreatment wash line</td><td>Prep metal surface pre-coat</td><td>Line-speed dependent</td><td>$50K–$200K</td><td>DürrEcoclean, Junair</td><td>Estimate</td></tr><tr class="alt"><td>Electrostatic powder coating booth + oven</td><td>Apply/cure coat finish</td><td>Batch or line-speed</td><td>SME $50K–$150K; Full line $300K–$1M+</td><td>Nordson, Gema, Wagner, COLO</td><td>Estimate</td></tr><tr class=""><td>CNC busbar processing machine</td><td>Fabricate AC/DC busbars</td><td>≈20-40 pcs/hr (mfr claim)</td><td>$30K–$150K</td><td>EHRT, LTMC, MAC/BUSBARMAC</td><td>Estimate</td></tr><tr class="alt"><td>DIN-rail tools, torque screwdrivers</td><td>Mount DC disconnects/fuses/breakers/terminals</td><td>Labor-hour driven</td><td>$500–$5,000 (hand tools)</td><td>Weidmüller, Phoenix Contact</td><td>Assumption</td></tr><tr class=""><td>Wire crimping/ferruling machine</td><td>Prepare wire ends, crimp lugs/ferrules</td><td>Units/hour, model-dependent</td><td>$5K–$100K+ (auto harness lines)</td><td>Komax, Schleuniger, Weidmüller</td><td>Estimate</td></tr><tr class="alt"><td>FIPFG gasket dispensing robot</td><td>Apply foam-in-place gasket for IP sealing</td><td>Insufficient Evidence</td><td>$40K–$150K</td><td>Sonderhoff, WINMAN</td><td>Estimate</td></tr><tr class=""><td>HiPot/dielectric test set</td><td>Insulation/withstand voltage test</td><td>Per-unit, minutes</td><td>$3K–$30K</td><td>Hipotronics, Chroma, Vitrek</td><td>Estimate</td></tr><tr class="alt"><td>IP/NEMA ingress test rig</td><td>Batch/type-test enclosure sealing</td><td>Per-test, type-test only</td><td>$10K–$100K+ (lab-grade)</td><td>Applus+ Keystone (test service)</td><td>Estimate</td></tr><tr class=""><td>Arc-flash/short-circuit test facility</td><td>Type-test switchgear internal-arc rating</td><td>Type-test only</td><td>N/A — outsourced to certified labs</td><td>KEMA Labs, CESI</td><td>Verified Fact (industry practice)</td></tr></tbody></table></div>
+<div class="note"><strong>Scale note: </strong>For an SME entrant adding BESS BOS cabinets to an existing LV panel shop, the realistic incremental capex is limited: DC-rated busbar/component handling know-how (mostly process/training, not new capex), possibly upgraded IP-testing/gasketing capability for outdoor-rated product, and access to third-party arc-flash/short-circuit type testing (never in-house even at large-plant scale). Laser cutting, press brake, powder coat, and busbar machines largely overlap with existing IEC 61439 LV panel capability.</div>
+<h2>5. Quality Control &amp; Testing</h2>
+<div class="step-card">
+        <h3>Dielectric / HiPot Test</h3>
+        <p class="step-purpose">Applies elevated AC or DC voltage between live parts and enclosure/ground to verify insulation integrity — required routine test under IEC 61439-1.</p>
+        <p class="step-equipment"><strong>Equipment: </strong>HiPot / dielectric withstand test set.</p>
+        
+        <div class="video-missing">No verified video found for this step.</div>
+        <div class="note step-note"><strong>Note: </strong>A general dielectric-withstand-test demonstration video was found in search but not independently re-verified this session — treat with caution before final publication.</div>
+      </div>
+<div class="step-card">
+        <h3>IP/NEMA Ingress Protection Testing (Water Spray/Dust)</h3>
+        <p class="step-purpose">Type test (not per-unit), verifying enclosure sealing per IEC 60529.</p>
+        <p class="step-equipment"><strong>Equipment: </strong>Dust chamber, water-jet nozzle test rig.</p>
+        
+        <div class="video-embed"><iframe src="https://www.youtube.com/embed/PV3PK_UDRa0" title="IP66 – Waterjet Test" loading="lazy" allowfullscreen frameborder="0"></iframe></div>
+           <div class="video-meta"><div class="video-title">IP66 – Waterjet Test</div><div class="video-channel">IndEx - Ex Professionals</div></div>
+        
+      </div>
+<div class="step-card">
+        <h3>IP Testing — Accredited Lab Footage</h3>
+        <p class="step-purpose">Professional test-lab footage of water-jet ingress testing.</p>
+        <p class="step-equipment"><strong>Equipment: </strong>Accredited certification-lab water-jet test rig.</p>
+        
+        <div class="video-embed"><iframe src="https://www.youtube.com/embed/6pY6A_5sVEA" title="Ingress Protection IPX5 Testing: Spraying of Water Jets" loading="lazy" allowfullscreen frameborder="0"></iframe></div>
+           <div class="video-meta"><div class="video-title">Ingress Protection IPX5 Testing: Spraying of Water Jets</div><div class="video-channel">Applus+ Keystone</div></div>
+        
+      </div>
+<div class="step-card">
+        <h3>DC Arc-Flash / Internal-Arc Rating (illustrative analog)</h3>
+        <p class="step-purpose">For switchgear, an internal arc-fault type test is performed at a certified HV lab — not built in-house.</p>
+        <p class="step-equipment"><strong>Equipment: </strong>Certified internal-arc-fault test facility.</p>
+        
+        <div class="video-embed"><iframe src="https://www.youtube.com/embed/FFRgNHZWstY" title="Medium Voltage Switchgear - Internal Arc Fault Test" loading="lazy" allowfullscreen frameborder="0"></iframe></div>
+           <div class="video-meta"><div class="video-title">Medium Voltage Switchgear - Internal Arc Fault Test</div><div class="video-channel">Think Smart!</div></div>
+        <div class="note step-note"><strong>Note: </strong>MV, not LV/DC-specific — the only real dramatic internal-arc-fault footage found; used as the closest verified analog since BESS DC arc-fault type-test footage does not exist publicly.</div>
+      </div>
+<div class="step-card">
+        <h3>Functional / Factory Acceptance Test (FAT)</h3>
+        <p class="step-purpose">Final end-to-end functional check (breaker operation, interlocks, wiring continuity, and — for BESS — communication loop test of CAN bus/RS485/Modbus links to BMS/EMS) before shipment.</p>
+        <p class="step-equipment"><strong>Equipment: </strong>FAT checklist procedure per IEC 61439 routine tests.</p>
+        
+        <div class="video-embed"><iframe src="https://www.youtube.com/embed/spnuAUhA2ZM" title="Step-by-Step Factory Acceptance Test | Industrial Control Panel Inspection" loading="lazy" allowfullscreen frameborder="0"></iframe></div>
+           <div class="video-meta"><div class="video-title">Step-by-Step Factory Acceptance Test | Industrial Control Panel Inspection</div><div class="video-channel">Infinity Controls</div></div>
+        
+      </div>
+<div class="note"><strong>Gap flag: </strong>Communication (CAN bus/RS485) loop testing specifically for BESS, and thermal cycling of the cabinet itself, both returned Insufficient Evidence — no dedicated public video found; these are typically folded into general FAT/functional testing (comms) or simply not filmed (thermal cycling applies mainly to the battery cells/modules, not the surrounding cabinetry).</div>
+<h2>6. Compiled Factory-Tour Video</h2>
+<div class="video-card video-card-compiled">
+        <div class="video-embed"><iframe src="https://www.youtube.com/embed/1k2YD5wBTGw" title="Look Inside One of Our Switchgear Factories" loading="lazy" allowfullscreen frameborder="0"></iframe></div>
+        <div class="video-meta"><div class="video-title">Look Inside One of Our Switchgear Factories</div><div class="video-channel">Eaton</div><p class="video-desc">An official Eaton corporate video giving an inside look at one of their switchgear manufacturing facilities — general LV/MV switchgear assembly, not BESS-specific.</p></div>
+      </div>
+<div class="note"><strong>Honest gap: </strong>No BESS-specific cabinet/switchgear factory tour exists on YouTube from any named BESS integrator (Sungrow, Huawei, CATL, Fluence, Wärtsilä, Powin) or enclosure major (Rittal, nVent, Schneider). This Eaton video is used explicitly as the closest verified general switchgear-factory substitute. A secondary alternative is "Electrical Panel Manufacturing Factory" (Unbox Factory, youtube.com/watch?v=wTHSDTWQCas), also general LV/MV, not BESS-specific.</div>
+<h2>7. Sources</h2>
+<ul class="single"><li>RAPID DIRECT — How Electronic Enclosure Is Made — youtube.com/watch?v=QhsI415LDoA</li></ul>
+<ul class="single"><li>JUGAO CNC MACHINE — CNC press brakes for metal boxes — youtube.com/watch?v=3X6fVzwek5I</li></ul>
+<ul class="single"><li>AWL — Laser Welding Solution for Electrical Cabinets with Robots — youtube.com/watch?v=UqLmczS1Qi0</li></ul>
+<ul class="single"><li>Prism Surface Coatings — Powder coating line for switchgear and electric panel — youtube.com/watch?v=-phThemjJTM</li></ul>
+<ul class="single"><li>ERSM Sheet Metal Solutions — 6-Axis CNC Busbar Punching Cutting Machine — youtube.com/watch?v=yuHiRJuWwas</li></ul>
+<ul class="single"><li>IET-76 — Industrial electrical panel wiring and assembly — youtube.com/watch?v=W70T8vOS13o</li></ul>
+<ul class="single"><li>WINMAN — CNC Foam Gasket for Enclosure Door &amp; Cover Sealing — youtube.com/watch?v=q8z6C7GGLJ4</li></ul>
+<ul class="single"><li>IndEx - Ex Professionals — IP66 Waterjet Test — youtube.com/watch?v=PV3PK_UDRa0</li></ul>
+<ul class="single"><li>Applus+ Keystone — Ingress Protection IPX5 Testing — youtube.com/watch?v=6pY6A_5sVEA</li></ul>
+<ul class="single"><li>Think Smart! — Medium Voltage Switchgear Internal Arc Fault Test — youtube.com/watch?v=FFRgNHZWstY</li></ul>
+<ul class="single"><li>Infinity Controls — Step-by-Step Factory Acceptance Test — youtube.com/watch?v=spnuAUhA2ZM</li></ul>
+<ul class="single"><li>Eaton — Look inside one of our switchgear factories — youtube.com/watch?v=1k2YD5wBTGw</li></ul>
+<ul class="single"><li>TE Connectivity — BESS Electrical Products Guide (component reference) — te.com</li></ul>
+<ul class="single"><li>Fractory — laser cutting machine cost — fractory.com</li></ul>
+<ul class="single"><li>Fannon Infrared — powder coating system cost for small shops — fannoninfrared.com</li></ul>
+    </section>
+  
+
+    <section id="en-mfg-plastics">
+      <h1>Engineering Plastics / Electrical Enclosures</h1>
+      <h2>1. Product Overview</h2>
+<p>Plastic electrical enclosures — junction boxes, distribution boxes, and IP65/UL94 V-0 rated housings such as the Schneider Thalassa, Legrand Plexo, Fibox, and Bopla product lines — are manufactured via plastic injection molding of engineering resins (typically polycarbonate, ABS, or glass-filled polyester). IP65 (IEC 60529) certifies dust-tight and water-jet-resistant sealing; UL94 V-0 certifies flame-retardant performance. A critical QC fact: UL94 V-0 certification is issued at the resin (material) level by the resin supplier via a UL "Yellow Card" — it is thickness- and formulation-specific, so a molder must source resin with a valid Yellow Card matching the exact wall thickness and color used, and cannot substitute materials without voiding certification.</p>
+<h2>2. Production Line — Process Overview</h2>
+<ul class="single"><li>1. Mold design &amp; tooling (upstream, one-time per-part-number CAPEX, typically outsourced to a specialist toolmaker)</li></ul>
+<ul class="single"><li>2. Resin drying / material preparation — hygroscopic PC/ABS pellets dried in desiccant hopper dryers</li></ul>
+<ul class="single"><li>3. Injection molding (core process) — molten resin injected into the closed mold under pressure</li></ul>
+<ul class="single"><li>4. Cooling &amp; ejection — part solidifies, then ejected (often by robot arm for clean IP65 sealing surfaces)</li></ul>
+<ul class="single"><li>5. Deflashing / trimming / gate removal — runners/flash removed, sealing-surface flatness checked</li></ul>
+<ul class="single"><li>6. Sealing — gasket insertion, FIPFG dispensing, or ultrasonic welding for lid-to-base IP65 sealing</li></ul>
+<ul class="single"><li>7. Hardware insertion — brass threaded inserts, hinges, latches, cable glands</li></ul>
+<ul class="single"><li>8. Pad printing / laser marking / labeling</li></ul>
+<ul class="single"><li>9. QC / testing — dimensional/visual inspection, IP65 ingress test, UL94 verification, IK impact/drop test</li></ul>
+<ul class="single"><li>10. Packaging — poly-bagging, carton packing, palletizing</li></ul>
+<h2>3. Step-by-Step: Equipment &amp; Real Video Demonstrations</h2>
+<div class="step-card">
+        <h3>Step 1 — Mold Design &amp; Tooling (upstream CAPEX)</h3>
+        <p class="step-purpose">Build the hardened-steel (or aluminum, for lower volumes) cavity/core tool defining the enclosure's geometry, sealing ribs, and insert pockets.</p>
+        <p class="step-equipment"><strong>Equipment: </strong>CNC milling, EDM (electrical discharge machining), mold-base assembly — typically a separate specialist toolmaker's shop.</p>
+        <p class="step-evidence">Lead time: 6-16 weeks [Estimate — Formlabs, Xometry, 2025/26]. Cost: mid-volume aluminum mold $2,000-$5,000; complex/high-volume steel mold $5,000-$100,000+ (an enclosure with sealing ribs/undercuts/inserts likely sits in the $15,000-$80,000 band) [Estimate].</p>
+        <div class="video-embed"><iframe src="https://www.youtube.com/embed/kf5dmjOM-RE" title="Factory Tour Injection Mold Tooling Process" loading="lazy" allowfullscreen frameborder="0"></iframe></div>
+           <div class="video-meta"><div class="video-title">Factory Tour Injection Mold Tooling Process</div><div class="video-channel">NCIM Eldorado Mold</div></div>
+        <div class="note step-note"><strong>Note: </strong>Found via search; title/channel match, not individually re-verified via oEmbed — re-check before final publication.</div>
+      </div>
+<div class="step-card">
+        <h3>Step 2 — Resin Drying / Material Preparation</h3>
+        <p class="step-purpose">Remove absorbed moisture from hygroscopic PC pellets before melting, preventing hydrolysis, splay/silver-streaking, and loss of impact strength/UL94 performance.</p>
+        <p class="step-equipment"><strong>Equipment: </strong>Desiccant hopper dryer + material loader.</p>
+        <p class="step-evidence">PC: dry at 110-130°C for 3-4 hours; ABS: 75-85°C for 2-4 hours [Estimate — super-ingenuity.cn, cross-checked general literature; always follow the resin supplier's datasheet].</p>
+        <div class="video-embed"><iframe src="https://www.youtube.com/embed/SgsnZpL0744" title="Plastics Processing: The Life of a Resin Pellet through Injection Molding and Extrusion" loading="lazy" allowfullscreen frameborder="0"></iframe></div>
+           <div class="video-meta"><div class="video-title">Plastics Processing: The Life of a Resin Pellet through Injection Molding and Extrusion</div><div class="video-channel">ConairGroup</div></div>
+        <div class="note step-note"><strong>Note: </strong>Official manufacturer of drying/material-handling equipment.</div>
+      </div>
+<div class="step-card">
+        <h3>Step 3 — Injection Molding (Core Process)</h3>
+        <p class="step-purpose">Melt resin and inject it under pressure into the closed mold to form the enclosure base/lid.</p>
+        <p class="step-equipment"><strong>Equipment: </strong>Hydraulic or electric injection molding machine, sized by clamp tonnage — enclosures of this size/wall-thickness typically run on 150-500 ton machines.</p>
+        <p class="step-evidence">Cycle time: 10-90 sec depending on part size, general industrial parts 25-45 sec typical; a mid-size enclosure shell likely 30-60 sec [Estimate/Assumption — Plast Fab Works, 2026, not enclosure-specific]. Price: SME (50-200t) used $15K-$120K, new Chinese-brand $18K-$48K; industrial (400-1000t+) new $220K-$550K+, used 400-700t $75K-$300K [Estimate — Meadoworks, Daoben Machinery, 2026].</p>
+        <div class="video-embed"><iframe src="https://www.youtube.com/embed/2qAnJy8x8WA" title="Plastics Injection Molding: Step-By-Step at the Factory — Field Notes" loading="lazy" allowfullscreen frameborder="0"></iframe></div>
+           <div class="video-meta"><div class="video-title">Plastics Injection Molding: Step-By-Step at the Factory — Field Notes</div><div class="video-channel">Camera Roll</div></div>
+        
+      </div>
+<div class="step-card">
+        <h3>Step 4 — Cooling &amp; Ejection</h3>
+        <p class="step-purpose">Hold part in mold under water-cooled temperature control until dimensionally stable, then eject via ejector pins or robot arm (robotic extraction preferred for cosmetic/sealing surfaces).</p>
+        <p class="step-equipment"><strong>Equipment: </strong>Mold cooling circuits (chiller/temperature control unit) + take-out robot.</p>
+        <p class="step-evidence">Cooling is typically 50-70% of total cycle time [Estimate — general injection-molding engineering knowledge, not enclosure-specific].</p>
+        <div class="video-missing">No verified video found for this step.</div>
+        <div class="note step-note"><strong>Note: </strong>No dedicated stand-alone video found beyond what's embedded in the Step 3 factory-tour video — flagged as Insufficient Evidence for a stage-specific video.</div>
+      </div>
+<div class="step-card">
+        <h3>Step 5 — Deflashing / Trimming / Gate Removal</h3>
+        <p class="step-purpose">Remove sprue/runner remnants and flash, particularly along parting lines and IP65 sealing faces where flash would compromise the gasket seal.</p>
+        <p class="step-equipment"><strong>Equipment: </strong>Manual trimming (hand tools/pneumatic nippers) for low-mid volume; cryogenic deflashing (liquid-nitrogen tumbling) for higher-volume/intricate parts.</p>
+        <p class="step-evidence">Insufficient Evidence for a specific throughput figure.</p>
+        <div class="video-missing">No verified video found for this step.</div>
+        <div class="note step-note"><strong>Note: </strong>No standalone verified video of cryogenic/mechanical deflashing specific to enclosures was found — flagged explicitly rather than guessed.</div>
+      </div>
+<div class="step-card">
+        <h3>Step 6 — Sealing (Gasket / FIPFG / Ultrasonic Welding)</h3>
+        <p class="step-purpose">Achieve the IP65+ seal between lid and base — via a pre-molded elastomer gasket, a dispensed foam-in-place polyurethane gasket (FIPFG), or ultrasonic welding for a permanently sealed housing.</p>
+        <p class="step-equipment"><strong>Equipment: </strong>FIPFG dispensing robot/mixing-metering system, or ultrasonic welding press.</p>
+        <p class="step-evidence">FIPFG: continuous bead application, seconds per part [Estimate]. Ultrasonic welding: typically 1-3 sec weld time plus load/unload [Estimate, not independently sourced].</p>
+        <div class="video-embed"><iframe src="https://www.youtube.com/embed/KDnTcciBm40" title="Product Basics: Formed-In-Place Foam Gaskets ("FIPFG"/"FIPG")" loading="lazy" allowfullscreen frameborder="0"></iframe></div>
+           <div class="video-meta"><div class="video-title">Product Basics: Formed-In-Place Foam Gaskets ("FIPFG"/"FIPG")</div><div class="video-channel">Industrilas</div></div>
+        <div class="note step-note"><strong>Note: </strong>Industrilas is also a supplier of enclosure hinges/hardware — doubly relevant. See also: ADTW Study, "Ultrasonic Welding | How Ultrasonic Welding Process Works" (youtube.com/watch?v=TH5Pkj3ew7k) — a general educational explainer, not enclosure-specific factory footage.</div>
+      </div>
+<div class="step-card">
+        <h3>Step 7 — Hardware Insertion (Brass Inserts, Hinges, Latches)</h3>
+        <p class="step-purpose">Install brass threaded inserts (for lid screws/mounting), metal hinges, and latch mechanisms — heat-staked/ultrasonically inserted post-molding, or molded-in via insert molding.</p>
+        <p class="step-equipment"><strong>Equipment: </strong>Automatic or semi-automatic heat-staking machine (thermal or ultrasonic horn press).</p>
+        <p class="step-evidence">Heat-staking is generally sub-5-second per insert on automated equipment [Assumption, not independently sourced].</p>
+        <div class="video-embed"><iframe src="https://www.youtube.com/embed/e7K-RXiQno8" title="Automatic Heat Staking Machine For Installing Brass Heat Set Threaded Insert for Plastics Parts" loading="lazy" allowfullscreen frameborder="0"></iframe></div>
+           <div class="video-meta"><div class="video-title">Automatic Heat Staking Machine For Installing Brass Heat Set Threaded Insert for Plastics Parts</div><div class="video-channel">Shenzhen Danrel Industrial Co., LTD</div></div>
+        
+      </div>
+<div class="step-card">
+        <h3>Step 8 — Pad Printing / Labeling</h3>
+        <p class="step-purpose">Apply logos, brand marks, terminal/rating labels onto the (often curved) enclosure surface.</p>
+        <p class="step-equipment"><strong>Equipment: </strong>Pad printing machine (single or rotary multi-color); laser marking as a permanent, chemical-free alternative.</p>
+        <p class="step-evidence">Typically a fast, few-seconds-per-print semi-automated operation [Assumption, not independently sourced].</p>
+        <div class="video-embed"><iframe src="https://www.youtube.com/embed/sq016InT-2k" title="How a Pad Printing Machine Works" loading="lazy" allowfullscreen frameborder="0"></iframe></div>
+           <div class="video-meta"><div class="video-title">How a Pad Printing Machine Works</div><div class="video-channel">Automark</div></div>
+        
+      </div>
+<h2>4. Equipment List — Full Table</h2>
+<div class="table-wrap"><table><colgroup><col style="width:20.00%"><col style="width:20.00%"><col style="width:14.00%"><col style="width:20.00%"><col style="width:16.00%"><col style="width:10.00%"></colgroup><thead><tr><th>Equipment</th><th>Function</th><th>Approx. Throughput</th><th>Approx. Price Range (USD)</th><th>Example Suppliers</th><th>Evidence</th></tr></thead><tbody><tr class=""><td>Production mold/tooling (steel, medium complexity)</td><td>Defines part geometry — one-time per-part-number investment</td><td>N/A (one-time)</td><td>Aluminum $2K–$5K; complex/high-volume steel $5K–$100K+ (enclosure likely $15K–$80K)</td><td>In-house or specialist toolmakers (China/Turkey/EU)</td><td>Estimate</td></tr><tr class="alt"><td>Injection molding machine, SME-scale (50–200t)</td><td>Core molding for small-to-mid enclosures</td><td>10–45 sec/shot</td><td>Used $15K–$120K; New (Chinese-brand) $18K–$48K</td><td>Haitian, Yizumi, Chen Hsong, Arburg, Engel</td><td>Estimate</td></tr><tr class=""><td>Injection molding machine, industrial-scale (400–1000t+)</td><td>Larger/multi-cavity enclosure lines</td><td>30–90 sec/shot</td><td>New $220K–$550K+; Used 400–700t $75K–$300K</td><td>Engel, Arburg, KraussMaffei, Wittmann Battenfeld, Husky, Haitian</td><td>Estimate</td></tr><tr class="alt"><td>Desiccant resin dryer / hopper loader</td><td>Remove moisture from PC/ABS pellets</td><td>PC: 110–130°C, 3–4h; ABS: 75–85°C, 2–4h</td><td>≈$3,000–$15,000</td><td>Conair, Novatec, Wittmann, Shini</td><td>Estimate / Assumption (price)</td></tr><tr class=""><td>Robot take-out / part-handling arm</td><td>Remove molded part, reduce cycle time &amp; cosmetic damage</td><td>N/A</td><td>Insufficient Evidence</td><td>Wittmann, Sepro, Yushin</td><td>Insufficient Evidence</td></tr><tr class="alt"><td>Ultrasonic welding press</td><td>Seal lid-to-base joint for IP rating</td><td>≈1–3 sec weld + load/unload</td><td>Insufficient Evidence</td><td>Branson (Emerson), Dukane, Herrmann Ultraschall, Rinco</td><td>Insufficient Evidence</td></tr><tr class=""><td>FIPFG gasket dispensing system</td><td>Apply foam-in-place gasket for IP65 sealing</td><td>Continuous bead, part-size dependent</td><td>Insufficient Evidence</td><td>DOPAG, Sonderhoff (Henkel), WinMan</td><td>Insufficient Evidence</td></tr><tr class="alt"><td>Heat-staking / brass-insert machine</td><td>Install brass threaded inserts</td><td>Sub-5 sec/insert</td><td>Insufficient Evidence</td><td>Danrel, Sonics, Branson</td><td>Insufficient Evidence</td></tr><tr class=""><td>Pad printing machine</td><td>Apply logos/labels/ratings</td><td>A few sec/print</td><td>Insufficient Evidence</td><td>Automark, TIC, Deco Tech</td><td>Insufficient Evidence</td></tr><tr class="alt"><td>IP65 ingress test chamber</td><td>Verify IEC 60529 rating</td><td>Minutes/test</td><td>Insufficient Evidence (likely five figures USD)</td><td>Applus+ Keystone (test service)</td><td>Insufficient Evidence</td></tr><tr class=""><td>CMM / dimensional inspection equipment</td><td>Verify critical dimensions, sealing-surface flatness</td><td>N/A</td><td>Insufficient Evidence</td><td>Zeiss, Hexagon, Mitutoyo (industry-standard names)</td><td>Insufficient Evidence</td></tr></tbody></table></div>
+<div class="note"><strong>Sizing note: </strong>Enclosures in the Thalassa/Plexo/Fibox/Bopla size range (shoebox to briefcase-size) typically run on 150-500 ton machines — a reasoned inference from general clamp-tonnage sizing rules (tonnage ≈ projected area × material-specific pressure factor), not a source naming this exact product category.</div>
+<h2>5. Quality Control &amp; Testing</h2>
+<div class="step-card">
+        <h3>IP65 Ingress Protection Testing</h3>
+        <p class="step-purpose">Verify dust-tight (IP6X) and water-jet-resistant (IPX5) sealing per IEC 60529 — can be done in-house on a QC-sample basis and/or via third-party certification labs.</p>
+        <p class="step-equipment"><strong>Equipment: </strong>Dust chamber (talc powder, vacuum-drawn) and water-jet nozzle test rig.</p>
+        
+        <div class="video-embed"><iframe src="https://www.youtube.com/embed/Hfb2QYB2rM4" title="Ingress Protection Testing to EN 60529" loading="lazy" allowfullscreen frameborder="0"></iframe></div>
+           <div class="video-meta"><div class="video-title">Ingress Protection Testing to EN 60529</div><div class="video-channel">Dr. EMC</div></div>
+        
+      </div>
+<div class="step-card">
+        <h3>IP Testing — Accredited Lab Footage</h3>
+        <p class="step-purpose">Professional accredited-lab footage of high-pressure water-jet ingress testing.</p>
+        <p class="step-equipment"><strong>Equipment: </strong>Accredited certification-lab water-jet test rig.</p>
+        
+        <div class="video-embed"><iframe src="https://www.youtube.com/embed/g5bCN7JV6p8" title="Ingress Protection IPX6 Testing: Exploring High Water Jet Resilience" loading="lazy" allowfullscreen frameborder="0"></iframe></div>
+           <div class="video-meta"><div class="video-title">Ingress Protection IPX6 Testing: Exploring High Water Jet Resilience</div><div class="video-channel">Applus+ Keystone</div></div>
+        
+      </div>
+<div class="step-card">
+        <h3>UL94 V-0 Flammability Rating</h3>
+        <p class="step-purpose">Confirmed: UL94 testing/certification is performed at the resin-supplier level (UL Yellow Card), not by the molder — thickness- and formulation-specific.</p>
+        <p class="step-equipment"><strong>Equipment: </strong>N/A for the molder — QC responsibility is sourcing only resin with a valid Yellow Card matching the exact wall thickness/color used.</p>
+        <p class="step-evidence">Verified via Protolabs technical documentation.</p>
+        <div class="video-missing">No verified video found for this step.</div>
+        <div class="note step-note"><strong>Note: </strong>No dedicated real factory-floor UL94 burn-test video specific to an enclosure manufacturer was confidently verified this session — flagged as not independently confirmed rather than asserted.</div>
+      </div>
+<div class="step-card">
+        <h3>IK Impact / Drop Test</h3>
+        <p class="step-purpose">Assess mechanical robustness of the enclosure housing per IEC 60335-2-24 / IK impact rating — relevant for junction/distribution boxes subject to field impact.</p>
+        <p class="step-equipment"><strong>Equipment: </strong>Steel-ball drop test rig.</p>
+        
+        <div class="video-embed"><iframe src="https://www.youtube.com/embed/Vlrkf76ddUs" title="IEC 60335-2-24 Impact Test Demo — Steel Ball Drop Test for Enclosure Safety" loading="lazy" allowfullscreen frameborder="0"></iframe></div>
+           <div class="video-meta"><div class="video-title">IEC 60335-2-24 Impact Test Demo — Steel Ball Drop Test for Enclosure Safety</div><div class="video-channel">Sinuotek</div></div>
+        
+      </div>
+<h2>6. Compiled Factory-Tour Video</h2>
+<div class="video-card video-card-compiled">
+        <div class="video-embed"><iframe src="https://www.youtube.com/embed/2qAnJy8x8WA" title="Plastics Injection Molding: Step-By-Step at the Factory — Field Notes" loading="lazy" allowfullscreen frameborder="0"></iframe></div>
+        <div class="video-meta"><div class="video-title">Plastics Injection Molding: Step-By-Step at the Factory — Field Notes</div><div class="video-channel">Camera Roll</div><p class="video-desc">A general factory-floor documentary-style walkthrough of the plastic injection molding process — raw pellet handling, the injection molding machine cycle (clamping, injection, cooling, ejection), and downstream trimming/finishing, filmed at an actual operating factory.</p></div>
+      </div>
+<div class="note"><strong>Honest gap: </strong>No electrical-enclosure-brand-specific factory-tour video (Fibox, Bopla, Schneider Thalassa, Legrand Plexo) was found publicly on YouTube — these companies publish product/marketing videos, not process footage. This is a real, verified general injection-molding factory tour, not an enclosure-specific one. Backup alternate: "Plastic Injection Molded Parts Manufacturing: Step-By-Step at the Factory" — RAPID DIRECT — youtube.com/watch?v=rHmVTb8WPmQ.</div>
+<h2>7. Sources</h2>
+<ul class="single"><li>NCIM Eldorado Mold — Factory Tour Injection Mold Tooling Process — youtube.com/watch?v=kf5dmjOM-RE</li></ul>
+<ul class="single"><li>ConairGroup — Life of a Resin Pellet through Injection Molding and Extrusion — youtube.com/watch?v=SgsnZpL0744</li></ul>
+<ul class="single"><li>Camera Roll — Plastics Injection Molding: Step-By-Step at the Factory — youtube.com/watch?v=2qAnJy8x8WA</li></ul>
+<ul class="single"><li>RAPID DIRECT — Plastic Injection Molded Parts Manufacturing — youtube.com/watch?v=rHmVTb8WPmQ</li></ul>
+<ul class="single"><li>Industrilas — Formed-In-Place Foam Gaskets (FIPFG) — youtube.com/watch?v=KDnTcciBm40</li></ul>
+<ul class="single"><li>ADTW Study — Ultrasonic Welding process explainer — youtube.com/watch?v=TH5Pkj3ew7k</li></ul>
+<ul class="single"><li>Shenzhen Danrel Industrial — Automatic Heat Staking / Brass Insert Machine — youtube.com/watch?v=e7K-RXiQno8</li></ul>
+<ul class="single"><li>Automark — How a Pad Printing Machine Works — youtube.com/watch?v=sq016InT-2k</li></ul>
+<ul class="single"><li>Dr. EMC — Ingress Protection Testing to EN 60529 — youtube.com/watch?v=Hfb2QYB2rM4</li></ul>
+<ul class="single"><li>Applus+ Keystone — IPX6 Water Jet Testing — youtube.com/watch?v=g5bCN7JV6p8</li></ul>
+<ul class="single"><li>Sinuotek — IEC 60335-2-24 Steel Ball Drop Test — youtube.com/watch?v=Vlrkf76ddUs</li></ul>
+<ul class="single"><li>Formlabs — How to Estimate Injection Molding Cost — formlabs.com</li></ul>
+<ul class="single"><li>Xometry — Understanding Injection Molding Cost for Manufacturers — xometry.com</li></ul>
+<ul class="single"><li>Plast Fab Works — Injection Molding Cycle Time Calculator (2026) — plastfabworks.com</li></ul>
+<ul class="single"><li>Meadoworks — Injection Molding Machine Prices 2026 — meadoworks.com</li></ul>
+<ul class="single"><li>Daoben Machinery — Injection Molding Machine Price List 2026 — daobenmachinery.com</li></ul>
+<ul class="single"><li>Protolabs — UL 94 Classification and Flame-Retardant Plastic Materials — protolabs.com</li></ul>
+    </section>
+  </main>
+  </div>
+    </div>
     <footer class="site-footer">
       <span id="footerAr">تقرير أُعدّ بالبحث والتحقق من مصادر متعددة. لا يُغني عن استشارة مالية/قانونية مستقلة قبل اتخاذ قرار استثماري.</span>
       <span id="footerEn" style="display:none">Prepared through multi-source research and verification. This does not substitute for independent financial/legal advice before making an investment decision.</span>
@@ -613,17 +1618,29 @@
   }
 
   function setLang(lang) {
-    document.getElementById('ar-content').classList.toggle('active', lang === 'ar');
-    document.getElementById('en-content').classList.toggle('active', lang === 'en');
+    document.querySelectorAll('.lang-block').forEach(function (el) {
+      el.classList.toggle('active', el.getAttribute('data-lang') === lang);
+    });
     document.getElementById('btnAr').classList.toggle('active', lang === 'ar');
     document.getElementById('btnEn').classList.toggle('active', lang === 'en');
     document.getElementById('footerAr').style.display = lang === 'ar' ? 'inline' : 'none';
     document.getElementById('footerEn').style.display = lang === 'en' ? 'inline' : 'none';
+    document.querySelectorAll('.tab-ar').forEach(function (el) { el.style.display = lang === 'ar' ? '' : 'none'; });
+    document.querySelectorAll('.tab-en').forEach(function (el) { el.style.display = lang === 'en' ? '' : 'none'; });
     document.getElementById('brandText').textContent = lang === 'ar'
       ? 'دراسة جدوى الاستثمار الصناعي — مصر والبرتغال'
       : 'Industrial Investment & Market Feasibility Study — Egypt & Portugal';
     document.documentElement.setAttribute('lang', lang);
     document.documentElement.setAttribute('dir', lang === 'ar' ? 'rtl' : 'ltr');
+    window.__curLang = lang;
+    window.scrollTo(0, 0);
+  }
+
+  function setView(view) {
+    document.getElementById('view-report').classList.toggle('active', view === 'report');
+    document.getElementById('view-mfg').classList.toggle('active', view === 'mfg');
+    document.getElementById('tabReport').classList.toggle('active', view === 'report');
+    document.getElementById('tabMfg').classList.toggle('active', view === 'mfg');
     window.scrollTo(0, 0);
   }
 </script>
